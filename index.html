@@ -156,16 +156,66 @@ const defaultRewards = [
   {id:3,name:"请你吃大餐 🍰",cost:200}
 ];
 
-let data = JSON.parse(localStorage.getItem("loveBank") || "null");
-if(!data){
-  data = {points:0, rewards:defaultRewards, records:[]};
-  save();
-}
-if(!Array.isArray(data.rewards)) data.rewards = defaultRewards;
-if(!Array.isArray(data.records)) data.records = [];
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDl6HgvheJZe18f1Vj_D2NirG3npTaFwB0",
+  authDomain: "love-point-card.firebaseapp.com",
+  databaseURL: "https://love-point-card-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "love-point-card",
+  storageBucket: "love-point-card.firebasestorage.app",
+  messagingSenderId: "979855456387",
+  appId: "1:979855456387:web:42560a01bb5d6dfddd43b6",
+  measurementId: "G-41H1TDBTPK"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+const dataRef = db.ref("loveBank");
+
+let data = {
+  points: 0,
+  rewards: defaultRewards,
+  records: []
+};
+
 let currentRole = null;
 
-function save(){localStorage.setItem("loveBank",JSON.stringify(data));}
+function save(){
+  return dataRef.set(data);
+}
+
+dataRef.on("value", function(snapshot) {
+
+  if(snapshot.exists()) {
+
+    data = snapshot.val();
+
+    if(!Array.isArray(data.rewards)){
+      data.rewards = defaultRewards;
+    }
+
+    if(!Array.isArray(data.records)){
+      data.records = [];
+    }
+
+  } else {
+
+    data = {
+      points: 0,
+      rewards: defaultRewards,
+      records: []
+    };
+
+    save();
+  }
+
+  render();
+});
+</script>
 
 function login(){
   const role=document.getElementById("role").value;
