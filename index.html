@@ -7,121 +7,171 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
   background:linear-gradient(135deg,#fff0f5,#ffe4ec,#fff7fa);
-  color:#542b3a
+  color:#542b3a;
 }
+
 .container{
   max-width:520px;
   margin:auto;
-  padding:20px 16px 40px
+  padding:20px 16px 40px;
 }
+
 .header{
   text-align:center;
-  padding:20px 10px 14px
+  padding:20px 10px 14px;
 }
-.heart{font-size:42px}
+
+.heart{
+  font-size:42px;
+}
+
 .header h1{
   margin:6px 0;
-  font-size:28px
+  font-size:28px;
 }
-.subtitle{color:#a56b7e}
+
+.subtitle{
+  color:#a56b7e;
+}
+
 .card{
   background:rgba(255,255,255,.94);
   border-radius:24px;
   padding:22px;
   margin:16px 0;
-  box-shadow:0 10px 30px rgba(190,90,120,.12)
+  box-shadow:0 10px 30px rgba(190,90,120,.12);
 }
-.center{text-align:center}
+
+.center{
+  text-align:center;
+}
+
 label{
   display:block;
   margin:14px 0 7px;
-  font-weight:600
+  font-weight:600;
 }
-select,input{
+
+select,
+input{
   width:100%;
   padding:14px;
   border:1px solid #f1c8d6;
   border-radius:14px;
   font-size:16px;
   background:#fff;
-  outline:none
+  outline:none;
 }
+
 button{
   border:0;
   border-radius:14px;
   padding:13px 18px;
   font-size:16px;
   font-weight:600;
-  cursor:pointer
+  cursor:pointer;
 }
+
 .primary{
   background:#f45b91;
-  color:white
+  color:white;
 }
+
 .secondary{
   background:#fff0f5;
-  color:#d94178
+  color:#d94178;
 }
+
 .full{
   width:100%;
-  margin-top:18px
+  margin-top:18px;
 }
+
 .notice{
   font-size:14px;
   line-height:1.8;
   color:#a56b7e;
-  margin-top:15px
+  margin-top:15px;
 }
-.hidden{display:none!important}
+
+.hidden{
+  display:none!important;
+}
+
 .points{
   background:linear-gradient(135deg,#ff6f9d,#f83f7c);
   color:white;
   text-align:center;
   border-radius:26px;
-  padding:26px 18px
+  padding:26px 18px;
 }
-.points small{font-size:16px}
+
+.points small{
+  font-size:16px;
+}
+
 .number{
   font-size:68px;
   font-weight:800;
   line-height:1.1;
-  margin:8px
+  margin:8px;
 }
+
 .reward{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
   padding:16px 0;
-  border-bottom:1px solid #f7dce5
+  border-bottom:1px solid #f7dce5;
 }
-.reward:last-child{border-bottom:0}
-.reward h3{margin:0 0 5px}
-.cost{color:#ef5b8a}
-.reward button{min-width:82px}
+
+.reward:last-child{
+  border-bottom:0;
+}
+
+.reward h3{
+  margin:0 0 5px;
+}
+
+.cost{
+  color:#ef5b8a;
+}
+
+.reward button{
+  min-width:82px;
+}
+
 .record{
   padding:10px 0;
   border-bottom:1px solid #f5dfe6;
-  font-size:14px
+  font-size:14px;
 }
+
 .footer{
   text-align:center;
   color:#b17b8d;
   padding:20px;
-  font-size:13px
+  font-size:13px;
 }
+
 .row{
   display:flex;
-  gap:10px
+  gap:10px;
 }
-.row>*{flex:1}
+
+.row>*{
+  flex:1;
+}
+
 .danger{
   background:#fff0f0;
-  color:#b53d3d
+  color:#b53d3d;
 }
 </style>
 </head>
@@ -130,206 +180,211 @@ button{
 
 <div class="container">
 
-<div class="header">
-  <div class="heart">💗</div>
-  <h1>我们的积分小屋</h1>
-  <div class="subtitle">只属于我们两个人的小世界</div>
-</div>
-
-<section id="loginPage" class="card">
-
-  <h2 class="center">💗 欢迎回来</h2>
-
-  <label>请选择身份</label>
-
-  <select id="role">
-    <option value="girl">女朋友 · 黎子雅</option>
-    <option value="boy">男朋友 · 林嘉钦</option>
-  </select>
-
-  <label>登录密码</label>
-
-  <input
-    id="password"
-    type="password"
-    inputmode="numeric"
-    maxlength="4"
-    placeholder="请输入密码"
-  >
-
-  <button
-    class="primary full"
-    onclick="login()"
-  >
-    进入我们的小世界
-  </button>
-
-  <div class="notice center">
-    女朋友密码：1220<br>
-    男朋友密码：0310
-  </div>
-
-  <div id="loginMsg"></div>
-
-</section>
-
-
-<section id="mainPage" class="hidden">
-
-  <div class="card points">
-
-    <small id="pointsOwner">
-      黎子雅的当前积分
-    </small>
-
-    <div class="number" id="points">
-      0
-    </div>
-
-    <div>
-      ❤️ 每一分都是嘉钦给你的心意
-    </div>
-
+  <div class="header">
+    <div class="heart">💗</div>
+    <h1>我们的积分小屋</h1>
+    <div class="subtitle">只属于我们两个人的小世界</div>
   </div>
 
 
-  <div class="card center">
+  <!-- 登录页面 -->
+  <section id="loginPage" class="card">
 
-    <div style="font-size:22px">
-      💕 我们已经在一起
-    </div>
+    <h2 class="center">💗 欢迎回来</h2>
 
-    <h2
-      id="days"
-      style="font-size:38px;margin:8px 0"
+    <label>请选择身份</label>
+
+    <select id="role">
+      <option value="girl">女朋友 · 黎子雅</option>
+      <option value="boy">男朋友 · 林嘉钦</option>
+    </select>
+
+    <label>登录密码</label>
+
+    <input
+      id="password"
+      type="password"
+      inputmode="numeric"
+      maxlength="4"
+      placeholder="请输入密码"
     >
-      0 天
-    </h2>
 
-    <div class="subtitle">
-      从 2026 年 3 月 10 日开始
+    <button
+      class="primary full"
+      onclick="login()"
+    >
+      进入我们的小世界
+    </button>
+
+    <div class="notice center">
+      女朋友密码：1220<br>
+      男朋友密码：0310
     </div>
 
-  </div>
+    <div id="loginMsg"></div>
+
+  </section>
 
 
-  <div id="girlPanel">
+  <!-- 主页面 -->
+  <section id="mainPage" class="hidden">
 
-    <div class="card">
+    <div class="card points">
 
-      <h2>🎁 我的奖励</h2>
+      <small id="pointsOwner">
+        黎子雅的当前积分
+      </small>
 
-      <div id="rewards"></div>
+      <div class="number" id="points">
+        0
+      </div>
+
+      <div>
+        ❤️ 每一分都是嘉钦给你的心意
+      </div>
 
     </div>
 
-  </div>
+
+    <div class="card center">
+
+      <div style="font-size:22px">
+        💕 我们已经在一起
+      </div>
+
+      <h2
+        id="days"
+        style="font-size:38px;margin:8px 0"
+      >
+        0 天
+      </h2>
+
+      <div class="subtitle">
+        从 2026 年 3 月 10 日开始
+      </div>
+
+    </div>
 
 
-  <div id="boyPanel" class="hidden">
+    <!-- 女朋友 -->
+    <div id="girlPanel">
 
-    <div class="card">
+      <div class="card">
 
-      <h2>💝 给子雅加积分</h2>
+        <h2>🎁 我的奖励</h2>
 
-      <div class="row">
+        <div id="rewards"></div>
 
-        <input
-          id="changePoints"
-          type="number"
-          inputmode="numeric"
-          placeholder="积分"
-        >
+      </div>
+
+    </div>
+
+
+    <!-- 男朋友 -->
+    <div id="boyPanel" class="hidden">
+
+      <div class="card">
+
+        <h2>💝 给子雅加积分</h2>
+
+        <div class="row">
+
+          <input
+            id="changePoints"
+            type="number"
+            inputmode="numeric"
+            placeholder="积分"
+          >
+
+          <button
+            class="primary"
+            onclick="addPoints()"
+          >
+            增加
+          </button>
+
+        </div>
 
         <button
-          class="primary"
-          onclick="addPoints()"
+          class="secondary full"
+          onclick="subtractPoints()"
         >
-          增加
+          扣除积分
         </button>
 
       </div>
 
-      <button
-        class="secondary full"
-        onclick="subtractPoints()"
-      >
-        扣除积分
-      </button>
+
+      <div class="card">
+
+        <h2>🎁 奖励管理</h2>
+
+        <input
+          id="rewardName"
+          placeholder="奖励名称，例如：奶茶一杯 🧋"
+        >
+
+        <input
+          id="rewardCost"
+          type="number"
+          inputmode="numeric"
+          placeholder="需要多少积分"
+          style="margin-top:10px"
+        >
+
+        <button
+          class="primary full"
+          onclick="addReward()"
+        >
+          ＋ 添加奖励
+        </button>
+
+        <div
+          id="adminRewards"
+          style="margin-top:12px"
+        ></div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h2>📖 全部记录</h2>
+
+        <div id="adminRecords"></div>
+
+      </div>
 
     </div>
 
 
     <div class="card">
 
-      <h2>🎁 奖励管理</h2>
+      <h2>💌 我们的记录</h2>
 
-      <input
-        id="rewardName"
-        placeholder="奖励名称，例如：奶茶一杯 🧋"
-      >
+      <div id="records"></div>
 
-      <input
-        id="rewardCost"
-        type="number"
-        inputmode="numeric"
-        placeholder="需要多少积分"
-        style="margin-top:10px"
-      >
+    </div>
+
+
+    <div class="center">
 
       <button
-        class="primary full"
-        onclick="addReward()"
+        class="secondary"
+        onclick="logout()"
       >
-        ＋ 添加奖励
+        退出登录
       </button>
 
-      <div
-        id="adminRewards"
-        style="margin-top:12px"
-      ></div>
-
     </div>
 
+  </section>
 
-    <div class="card">
 
-      <h2>📖 全部记录</h2>
-
-      <div id="adminRecords"></div>
-
-    </div>
-
+  <div class="footer">
+    林嘉钦 ❤️ 黎子雅<br>
+    Love is made of little moments.
   </div>
-
-
-  <div class="card">
-
-    <h2>💌 我们的记录</h2>
-
-    <div id="records"></div>
-
-  </div>
-
-
-  <div class="center">
-
-    <button
-      class="secondary"
-      onclick="logout()"
-    >
-      退出登录
-    </button>
-
-  </div>
-
-</section>
-
-
-<div class="footer">
-  林嘉钦 ❤️ 黎子雅<br>
-  Love is made of little moments.
-</div>
 
 </div>
 
@@ -355,6 +410,25 @@ const USERS = {
     email: "19731170879@163.com",
     name: "林嘉钦"
   }
+
+};
+
+
+/*
+  网页只输入4位密码。
+
+  女朋友：
+  1220 → Firebase实际密码 12201220
+
+  男朋友：
+  0310 → Firebase实际密码 03100310
+*/
+
+const PASSWORD_MAP = {
+
+  girl: "12201220",
+
+  boy: "03100310"
 
 };
 
@@ -448,9 +522,7 @@ let dataListenerAttached = false;
 
 
 
-/* =========================
-   登录后的界面
-========================= */
+/* 登录后显示主页面 */
 
 function setLoggedInUI(role){
 
@@ -491,9 +563,7 @@ function setLoggedInUI(role){
 
 
 
-/* =========================
-   退出登录后的界面
-========================= */
+/* 退出 */
 
 function setLoggedOutUI(){
 
@@ -519,9 +589,7 @@ function setLoggedOutUI(){
 
 
 
-/* =========================
-   Firebase 实时监听
-========================= */
+/* Firebase实时监听 */
 
 function startDataListener(){
 
@@ -582,15 +650,7 @@ function startDataListener(){
 
 
         dataRef
-          .set(data)
-          .catch(function(error){
-
-            console.error(
-              "初始化数据失败：",
-              error
-            );
-
-          });
+          .set(data);
 
       }
 
@@ -614,9 +674,7 @@ function startDataListener(){
 
 
 
-/* =========================
-   保存数据到 Firebase
-========================= */
+/* 保存到Firebase */
 
 function save(){
 
@@ -654,9 +712,7 @@ function save(){
 
 
 
-/* =========================
-   登录
-========================= */
+/* 登录 */
 
 function login(){
 
@@ -666,7 +722,21 @@ function login(){
       .value;
 
 
-  const password =
+  /*
+    这里非常重要：
+
+    你输入的是4位：
+
+    女朋友 → 1220
+    男朋友 → 0310
+
+    但是Firebase实际登录密码是：
+
+    女朋友 → 12201220
+    男朋友 → 03100310
+  */
+
+  const pin =
     document
       .getElementById("password")
       .value;
@@ -677,20 +747,24 @@ function login(){
       .getElementById("loginMsg");
 
 
-  const email =
-    USERS[role].email;
-
-
-  if(!password){
+  if(pin.length !== 4){
 
     msg.innerHTML =
       '<div class="notice center" style="color:#c43d61">' +
-      '请输入密码 💗' +
+      '请输入4位密码 💗' +
       '</div>';
 
     return;
 
   }
+
+
+  const password =
+    PASSWORD_MAP[role];
+
+
+  const email =
+    USERS[role].email;
 
 
   msg.innerHTML =
@@ -733,20 +807,21 @@ function login(){
 
       }
 
-      else if(
+
+      if(
         error.code ===
         "auth/user-disabled"
       ){
 
         text =
-          "这个账号已被禁用。";
+          "这个账号已经被禁用。";
 
       }
 
 
       msg.innerHTML =
         '<div class="notice center" style="color:#c43d61">' +
-        escapeHtml(text) +
+        text +
         '</div>';
 
     });
@@ -755,9 +830,7 @@ function login(){
 
 
 
-/* =========================
-   退出登录
-========================= */
+/* 退出登录 */
 
 function logout(){
 
@@ -778,9 +851,7 @@ function logout(){
 
 
 
-/* =========================
-   Firebase 登录状态
-========================= */
+/* Firebase登录状态 */
 
 auth.onAuthStateChanged(
   function(user){
@@ -834,9 +905,7 @@ auth.onAuthStateChanged(
 
 
 
-/* =========================
-   页面渲染
-========================= */
+/* 页面渲染 */
 
 function render(){
 
@@ -854,14 +923,11 @@ function render(){
 
   const days =
     Math.max(
-
       0,
-
       Math.floor(
         (new Date() - START_DATE)
         / 86400000
       )
-
     );
 
 
@@ -871,13 +937,11 @@ function render(){
     days + " 天";
 
 
-
   document
     .getElementById("rewards")
     .innerHTML =
 
     data.rewards
-
       .map(function(r){
 
         return `
@@ -908,9 +972,7 @@ function render(){
         `;
 
       })
-
       .join("");
-
 
 
   document
@@ -918,7 +980,6 @@ function render(){
     .innerHTML =
 
     data.rewards
-
       .map(function(r){
 
         return `
@@ -949,9 +1010,7 @@ function render(){
         `;
 
       })
-
       .join("");
-
 
 
   const records =
@@ -985,7 +1044,6 @@ function render(){
           `;
 
         })
-
         .join("")
 
       :
@@ -993,7 +1051,6 @@ function render(){
       '<div class="notice">' +
       '还没有记录 💕' +
       '</div>';
-
 
 
   document
@@ -1011,9 +1068,7 @@ function render(){
 
 
 
-/* =========================
-   男朋友增加积分
-========================= */
+/* 增加积分 */
 
 function addPoints(){
 
@@ -1072,9 +1127,7 @@ function addPoints(){
 
 
 
-/* =========================
-   男朋友扣积分
-========================= */
+/* 扣除积分 */
 
 function subtractPoints(){
 
@@ -1137,9 +1190,7 @@ function subtractPoints(){
 
 
 
-/* =========================
-   女朋友兑换奖励
-========================= */
+/* 兑换奖励 */
 
 function redeem(id){
 
@@ -1209,9 +1260,7 @@ function redeem(id){
 
 
 
-/* =========================
-   添加奖励
-========================= */
+/* 添加奖励 */
 
 function addReward(){
 
@@ -1279,9 +1328,7 @@ function addReward(){
 
 
 
-/* =========================
-   删除奖励
-========================= */
+/* 删除奖励 */
 
 function deleteReward(id){
 
@@ -1308,9 +1355,7 @@ function deleteReward(id){
 
 
 
-/* =========================
-   当前时间
-========================= */
+/* 时间 */
 
 function now(){
 
@@ -1326,9 +1371,7 @@ function now(){
 
 
 
-/* =========================
-   防止文字注入
-========================= */
+/* 防止HTML注入 */
 
 function escapeHtml(s){
 
@@ -1354,9 +1397,7 @@ function escapeHtml(s){
 
 
 
-/* =========================
-   回车登录
-========================= */
+/* 回车登录 */
 
 document
   .getElementById("password")
