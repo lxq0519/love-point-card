@@ -1,17 +1,40 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
 <title>我们的积分小屋 💗</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:linear-gradient(135deg,#fff0f5,#ffe4ec,#fff7fa);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff0f5,
+      #ffe4ec,
+      #fff7fa
+    );
+
   color:#542b3a;
 }
 
@@ -44,7 +67,9 @@ body{
   border-radius:24px;
   padding:22px;
   margin:16px 0;
-  box-shadow:0 10px 30px rgba(190,90,120,.12);
+  box-shadow:
+    0 10px 30px
+    rgba(190,90,120,.12);
 }
 
 .center{
@@ -61,19 +86,29 @@ select,
 input{
   width:100%;
   padding:14px;
-  border:1px solid #f1c8d6;
+
+  border:
+    1px solid
+    #f1c8d6;
+
   border-radius:14px;
+
   font-size:16px;
+
   background:#fff;
+
   outline:none;
 }
 
 button{
   border:0;
   border-radius:14px;
+
   padding:13px 18px;
+
   font-size:16px;
   font-weight:600;
+
   cursor:pointer;
 }
 
@@ -95,7 +130,9 @@ button{
 .notice{
   font-size:14px;
   line-height:1.8;
+
   color:#a56b7e;
+
   margin-top:15px;
 }
 
@@ -104,10 +141,19 @@ button{
 }
 
 .points{
-  background:linear-gradient(135deg,#ff6f9d,#f83f7c);
+  background:
+    linear-gradient(
+      135deg,
+      #ff6f9d,
+      #f83f7c
+    );
+
   color:white;
+
   text-align:center;
+
   border-radius:26px;
+
   padding:26px 18px;
 }
 
@@ -118,17 +164,26 @@ button{
 .number{
   font-size:68px;
   font-weight:800;
+
   line-height:1.1;
+
   margin:8px;
 }
 
 .reward{
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
+
   gap:12px;
+
   padding:16px 0;
-  border-bottom:1px solid #f7dce5;
+
+  border-bottom:
+    1px solid
+    #f7dce5;
 }
 
 .reward:last-child{
@@ -149,14 +204,21 @@ button{
 
 .record{
   padding:10px 0;
-  border-bottom:1px solid #f5dfe6;
+
+  border-bottom:
+    1px solid
+    #f5dfe6;
+
   font-size:14px;
 }
 
 .footer{
   text-align:center;
+
   color:#b17b8d;
+
   padding:20px;
+
   font-size:13px;
 }
 
@@ -173,41 +235,80 @@ button{
   background:#fff0f0;
   color:#b53d3d;
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
+
+  <!-- 顶部 -->
+
   <div class="header">
-    <div class="heart">💗</div>
-    <h1>我们的积分小屋</h1>
-    <div class="subtitle">只属于我们两个人的小世界</div>
+
+    <div class="heart">
+      💗
+    </div>
+
+    <h1>
+      我们的积分小屋
+    </h1>
+
+    <div class="subtitle">
+      只属于我们两个人的小世界
+    </div>
+
   </div>
 
 
-  <!-- 登录页面 -->
-  <section id="loginPage" class="card">
 
-    <h2 class="center">💗 欢迎回来</h2>
+  <!-- 登录 -->
 
-    <label>请选择身份</label>
+  <section
+    id="loginPage"
+    class="card"
+  >
+
+    <h2 class="center">
+      💗 欢迎回来
+    </h2>
+
+
+    <label>
+      请选择身份
+    </label>
+
 
     <select id="role">
-      <option value="girl">女朋友 · 黎子雅</option>
-      <option value="boy">男朋友 · 林嘉钦</option>
+
+      <option value="girl">
+        女朋友 · 黎子雅
+      </option>
+
+      <option value="boy">
+        男朋友 · 林嘉钦
+      </option>
+
     </select>
 
-    <label>登录密码</label>
+
+    <label>
+      登录密码
+    </label>
+
 
     <input
       id="password"
       type="password"
       inputmode="numeric"
       maxlength="4"
-      placeholder="请输入密码"
+      placeholder="请输入4位密码"
     >
+
 
     <button
       class="primary full"
@@ -216,18 +317,31 @@ button{
       进入我们的小世界
     </button>
 
+
     <div class="notice center">
+
       女朋友密码：1220<br>
+
       男朋友密码：0310
+
     </div>
+
 
     <div id="loginMsg"></div>
 
   </section>
 
 
+
   <!-- 主页面 -->
-  <section id="mainPage" class="hidden">
+
+  <section
+    id="mainPage"
+    class="hidden"
+  >
+
+
+    <!-- 积分 -->
 
     <div class="card points">
 
@@ -235,9 +349,14 @@ button{
         黎子雅的当前积分
       </small>
 
-      <div class="number" id="points">
+
+      <div
+        class="number"
+        id="points"
+      >
         0
       </div>
+
 
       <div>
         ❤️ 每一分都是嘉钦给你的心意
@@ -246,11 +365,17 @@ button{
     </div>
 
 
+
+    <!-- 在一起多少天 -->
+
     <div class="card center">
 
       <div style="font-size:22px">
+
         💕 我们已经在一起
+
       </div>
+
 
       <h2
         id="days"
@@ -259,19 +384,26 @@ button{
         0 天
       </h2>
 
+
       <div class="subtitle">
+
         从 2026 年 3 月 10 日开始
+
       </div>
 
     </div>
 
 
+
     <!-- 女朋友 -->
+
     <div id="girlPanel">
 
       <div class="card">
 
-        <h2>🎁 我的奖励</h2>
+        <h2>
+          🎁 我的奖励
+        </h2>
 
         <div id="rewards"></div>
 
@@ -280,12 +412,23 @@ button{
     </div>
 
 
+
     <!-- 男朋友 -->
-    <div id="boyPanel" class="hidden">
+
+    <div
+      id="boyPanel"
+      class="hidden"
+    >
+
+
+      <!-- 加减积分 -->
 
       <div class="card">
 
-        <h2>💝 给子雅加积分</h2>
+        <h2>
+          💝 给子雅加积分
+        </h2>
+
 
         <div class="row">
 
@@ -296,6 +439,7 @@ button{
             placeholder="积分"
           >
 
+
           <button
             class="primary"
             onclick="addPoints()"
@@ -304,6 +448,7 @@ button{
           </button>
 
         </div>
+
 
         <button
           class="secondary full"
@@ -315,14 +460,21 @@ button{
       </div>
 
 
+
+      <!-- 奖励管理 -->
+
       <div class="card">
 
-        <h2>🎁 奖励管理</h2>
+        <h2>
+          🎁 奖励管理
+        </h2>
+
 
         <input
           id="rewardName"
           placeholder="奖励名称，例如：奶茶一杯 🧋"
         >
+
 
         <input
           id="rewardCost"
@@ -332,12 +484,14 @@ button{
           style="margin-top:10px"
         >
 
+
         <button
           class="primary full"
           onclick="addReward()"
         >
           ＋ 添加奖励
         </button>
+
 
         <div
           id="adminRewards"
@@ -347,9 +501,15 @@ button{
       </div>
 
 
+
+      <!-- 全部记录 -->
+
       <div class="card">
 
-        <h2>📖 全部记录</h2>
+        <h2>
+          📖 全部记录
+        </h2>
+
 
         <div id="adminRecords"></div>
 
@@ -358,14 +518,23 @@ button{
     </div>
 
 
+
+    <!-- 共同记录 -->
+
     <div class="card">
 
-      <h2>💌 我们的记录</h2>
+      <h2>
+        💌 我们的记录
+      </h2>
+
 
       <div id="records"></div>
 
     </div>
 
+
+
+    <!-- 退出 -->
 
     <div class="center">
 
@@ -381,84 +550,36 @@ button{
   </section>
 
 
+
+  <!-- 底部 -->
+
   <div class="footer">
+
     林嘉钦 ❤️ 黎子雅<br>
+
     Love is made of little moments.
+
   </div>
+
 
 </div>
 
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-auth-compat.js"></script>
+<!-- Firebase -->
+
+<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
 
 
+
 <script>
 
-const USERS = {
 
-  girl: {
-    email: "3751821168@qq.com",
-    name: "黎子雅"
-  },
-
-  boy: {
-    email: "19731170879@163.com",
-    name: "林嘉钦"
-  }
-
-};
-
-
-/*
-  网页只输入4位密码。
-
-  女朋友：
-  1220 → Firebase实际密码 12201220
-
-  男朋友：
-  0310 → Firebase实际密码 03100310
-*/
-
-const PASSWORD_MAP = {
-
-  girl: "12201220",
-
-  boy: "03100310"
-
-};
-
-
-const START_DATE =
-  new Date("2026-03-10T00:00:00");
-
-
-const defaultRewards = [
-
-  {
-    id:1,
-    name:"奶茶一杯 🧋",
-    cost:50
-  },
-
-  {
-    id:2,
-    name:"陪你看电影 🎬",
-    cost:100
-  },
-
-  {
-    id:3,
-    name:"请你吃大餐 🍰",
-    cost:200
-  }
-
-];
-
+/* =========================
+   Firebase 配置
+========================= */
 
 const firebaseConfig = {
 
@@ -489,11 +610,10 @@ const firebaseConfig = {
 };
 
 
-firebase.initializeApp(firebaseConfig);
 
-
-const auth =
-  firebase.auth();
+firebase.initializeApp(
+  firebaseConfig
+);
 
 
 const db =
@@ -504,11 +624,46 @@ const dataRef =
   db.ref("loveBank");
 
 
+
+/* =========================
+   初始数据
+========================= */
+
+const START_DATE =
+  new Date(
+    "2026-03-10T00:00:00"
+  );
+
+
+const defaultRewards = [
+
+  {
+    id:1,
+    name:"奶茶一杯 🧋",
+    cost:50
+  },
+
+  {
+    id:2,
+    name:"陪你看电影 🎬",
+    cost:100
+  },
+
+  {
+    id:3,
+    name:"请你吃大餐 🍰",
+    cost:200
+  }
+
+];
+
+
 let data = {
 
   points:0,
 
-  rewards:defaultRewards,
+  rewards:
+    defaultRewards,
 
   records:[]
 
@@ -517,21 +672,132 @@ let data = {
 
 let currentRole = null;
 
-
 let dataListenerAttached = false;
 
 
 
-/* 登录后显示主页面 */
+/* =========================
+   登录
+========================= */
+
+function login(){
+
+  const role =
+    document
+      .getElementById("role")
+      .value;
+
+
+  const pin =
+    document
+      .getElementById("password")
+      .value;
+
+
+  const msg =
+    document
+      .getElementById("loginMsg");
+
+
+  /* 必须4位 */
+
+  if(pin.length !== 4){
+
+    msg.innerHTML =
+
+      '<div class="notice center" ' +
+
+      'style="color:#c43d61">' +
+
+      '请输入4位密码 💗' +
+
+      '</div>';
+
+    return;
+
+  }
+
+
+
+  /* 女朋友 */
+
+  if(
+    role === "girl" &&
+    pin !== "1220"
+  ){
+
+    showLoginError();
+
+    return;
+
+  }
+
+
+
+  /* 男朋友 */
+
+  if(
+    role === "boy" &&
+    pin !== "0310"
+  ){
+
+    showLoginError();
+
+    return;
+
+  }
+
+
+
+  /* 登录成功 */
+
+  msg.innerHTML = "";
+
+  setLoggedInUI(role);
+
+}
+
+
+
+/* =========================
+   登录错误
+========================= */
+
+function showLoginError(){
+
+  const msg =
+    document
+      .getElementById("loginMsg");
+
+
+  msg.innerHTML =
+
+    '<div class="notice center" ' +
+
+    'style="color:#c43d61">' +
+
+    '密码不正确，请再试一次 💗' +
+
+    '</div>';
+
+}
+
+
+
+/* =========================
+   登录成功后的页面
+========================= */
 
 function setLoggedInUI(role){
 
   currentRole = role;
 
+
   document
     .getElementById("loginPage")
     .classList
     .add("hidden");
+
 
   document
     .getElementById("mainPage")
@@ -557,17 +823,22 @@ function setLoggedInUI(role){
     );
 
 
+  startDataListener();
+
   render();
 
 }
 
 
 
-/* 退出 */
+/* =========================
+   退出登录
+========================= */
 
-function setLoggedOutUI(){
+function logout(){
 
   currentRole = null;
+
 
   document
     .getElementById("mainPage")
@@ -585,16 +856,26 @@ function setLoggedOutUI(){
     .getElementById("password")
     .value = "";
 
+
+  document
+    .getElementById("loginMsg")
+    .innerHTML = "";
+
 }
 
 
 
-/* Firebase实时监听 */
+/* =========================
+   Firebase 实时同步
+========================= */
 
 function startDataListener(){
 
-  if(dataListenerAttached)
+  if(dataListenerAttached){
+
     return;
+
+  }
 
 
   dataListenerAttached = true;
@@ -608,10 +889,17 @@ function startDataListener(){
 
       if(snapshot.exists()){
 
-        data = snapshot.val();
+        data =
+          snapshot.val();
 
 
-        if(!Array.isArray(data.rewards)){
+        /* 确保奖励是数组 */
+
+        if(
+          !Array.isArray(
+            data.rewards
+          )
+        ){
 
           data.rewards =
             defaultRewards;
@@ -619,23 +907,38 @@ function startDataListener(){
         }
 
 
-        if(!Array.isArray(data.records)){
+        /* 确保记录是数组 */
+
+        if(
+          !Array.isArray(
+            data.records
+          )
+        ){
 
           data.records = [];
 
         }
 
 
-        if(typeof data.points !== "number"){
+        /* 确保积分是数字 */
+
+        if(
+          typeof data.points
+          !== "number"
+        ){
 
           data.points =
-            Number(data.points) || 0;
+            Number(
+              data.points
+            ) || 0;
 
         }
 
       }
 
       else{
+
+        /* 第一次使用 */
 
         data = {
 
@@ -659,11 +962,17 @@ function startDataListener(){
 
     },
 
+
     function(error){
 
       console.error(
         "读取数据库失败：",
         error
+      );
+
+
+      alert(
+        "读取同步数据失败，请检查 Firebase 规则。"
       );
 
     }
@@ -674,20 +983,11 @@ function startDataListener(){
 
 
 
-/* 保存到Firebase */
+/* =========================
+   保存数据
+========================= */
 
 function save(){
-
-  if(!auth.currentUser){
-
-    alert("请先登录");
-
-    return Promise.reject(
-      new Error("未登录")
-    );
-
-  }
-
 
   return dataRef
     .set(data)
@@ -699,10 +999,12 @@ function save(){
         error
       );
 
+
       alert(
         "数据保存失败：" +
         error.message
       );
+
 
       throw error;
 
@@ -712,200 +1014,9 @@ function save(){
 
 
 
-/* 登录 */
-
-function login(){
-
-  const role =
-    document
-      .getElementById("role")
-      .value;
-
-
-  /*
-    这里非常重要：
-
-    你输入的是4位：
-
-    女朋友 → 1220
-    男朋友 → 0310
-
-    但是Firebase实际登录密码是：
-
-    女朋友 → 12201220
-    男朋友 → 03100310
-  */
-
-  const pin =
-    document
-      .getElementById("password")
-      .value;
-
-
-  const msg =
-    document
-      .getElementById("loginMsg");
-
-
-  if(pin.length !== 4){
-
-    msg.innerHTML =
-      '<div class="notice center" style="color:#c43d61">' +
-      '请输入4位密码 💗' +
-      '</div>';
-
-    return;
-
-  }
-
-
-  const password =
-    PASSWORD_MAP[role];
-
-
-  const email =
-    USERS[role].email;
-
-
-  msg.innerHTML =
-    '<div class="notice center">' +
-    '正在登录，请稍等…… 💗' +
-    '</div>';
-
-
-  auth
-    .signInWithEmailAndPassword(
-      email,
-      password
-    )
-
-    .then(function(){
-
-      setLoggedInUI(role);
-
-    })
-
-    .catch(function(error){
-
-      console.error(
-        "登录失败：",
-        error
-      );
-
-
-      let text =
-        "账号或密码不正确，请检查后再试。";
-
-
-      if(
-        error.code ===
-        "auth/too-many-requests"
-      ){
-
-        text =
-          "尝试次数太多，请稍等一会儿再试。";
-
-      }
-
-
-      if(
-        error.code ===
-        "auth/user-disabled"
-      ){
-
-        text =
-          "这个账号已经被禁用。";
-
-      }
-
-
-      msg.innerHTML =
-        '<div class="notice center" style="color:#c43d61">' +
-        text +
-        '</div>';
-
-    });
-
-}
-
-
-
-/* 退出登录 */
-
-function logout(){
-
-  auth
-    .signOut()
-
-    .then(function(){
-
-      setLoggedOutUI();
-
-      document
-        .getElementById("loginMsg")
-        .innerHTML = "";
-
-    });
-
-}
-
-
-
-/* Firebase登录状态 */
-
-auth.onAuthStateChanged(
-  function(user){
-
-    if(!user){
-
-      setLoggedOutUI();
-
-      return;
-
-    }
-
-
-    let role = null;
-
-
-    if(
-      user.email ===
-      USERS.girl.email
-    ){
-
-      role = "girl";
-
-    }
-
-    else if(
-      user.email ===
-      USERS.boy.email
-    ){
-
-      role = "boy";
-
-    }
-
-    else{
-
-      auth.signOut();
-
-      return;
-
-    }
-
-
-    setLoggedInUI(role);
-
-
-    startDataListener();
-
-  }
-);
-
-
-
-/* 页面渲染 */
+/* =========================
+   页面渲染
+========================= */
 
 function render(){
 
@@ -921,13 +1032,26 @@ function render(){
     "黎子雅的当前积分";
 
 
+
+  /* 在一起天数 */
+
   const days =
+
     Math.max(
+
       0,
+
       Math.floor(
-        (new Date() - START_DATE)
-        / 86400000
+
+        (
+          new Date()
+          - START_DATE
+        )
+        /
+        86400000
+
       )
+
     );
 
 
@@ -937,11 +1061,15 @@ function render(){
     days + " 天";
 
 
+
+  /* 女朋友看到的奖励 */
+
   document
     .getElementById("rewards")
     .innerHTML =
 
     data.rewards
+
       .map(function(r){
 
         return `
@@ -972,14 +1100,19 @@ function render(){
         `;
 
       })
+
       .join("");
 
+
+
+  /* 男朋友看到的奖励 */
 
   document
     .getElementById("adminRewards")
     .innerHTML =
 
     data.rewards
+
       .map(function(r){
 
         return `
@@ -1010,8 +1143,12 @@ function render(){
         `;
 
       })
+
       .join("");
 
+
+
+  /* 记录 */
 
   const records =
 
@@ -1020,7 +1157,9 @@ function render(){
       ?
 
       data.records
+
         .slice()
+
         .reverse()
 
         .map(function(x){
@@ -1033,10 +1172,10 @@ function render(){
 
               <br>
 
-              <span style="color:#ad7a8c">
-
+              <span
+                style="color:#ad7a8c"
+              >
                 ${escapeHtml(x.time)}
-
               </span>
 
             </div>
@@ -1044,13 +1183,17 @@ function render(){
           `;
 
         })
+
         .join("")
 
       :
 
       '<div class="notice">' +
+
       '还没有记录 💕' +
+
       '</div>';
+
 
 
   document
@@ -1068,19 +1211,31 @@ function render(){
 
 
 
-/* 增加积分 */
+/* =========================
+   男朋友增加积分
+========================= */
 
 function addPoints(){
 
-  if(currentRole !== "boy")
+  if(
+    currentRole !== "boy"
+  ){
+
     return;
+
+  }
 
 
   const n =
+
     Number(
+
       document
-        .getElementById("changePoints")
+        .getElementById(
+          "changePoints"
+        )
         .value
+
     );
 
 
@@ -1100,7 +1255,8 @@ function addPoints(){
     Math.floor(n);
 
 
-  data.points += amount;
+  data.points +=
+    amount;
 
 
   data.records.push({
@@ -1115,7 +1271,9 @@ function addPoints(){
 
 
   document
-    .getElementById("changePoints")
+    .getElementById(
+      "changePoints"
+    )
     .value = "";
 
 
@@ -1127,19 +1285,31 @@ function addPoints(){
 
 
 
-/* 扣除积分 */
+/* =========================
+   男朋友扣除积分
+========================= */
 
 function subtractPoints(){
 
-  if(currentRole !== "boy")
+  if(
+    currentRole !== "boy"
+  ){
+
     return;
+
+  }
 
 
   const n =
+
     Number(
+
       document
-        .getElementById("changePoints")
+        .getElementById(
+          "changePoints"
+        )
         .value
+
     );
 
 
@@ -1160,6 +1330,7 @@ function subtractPoints(){
 
 
   data.points =
+
     Math.max(
       0,
       data.points - amount
@@ -1178,7 +1349,9 @@ function subtractPoints(){
 
 
   document
-    .getElementById("changePoints")
+    .getElementById(
+      "changePoints"
+    )
     .value = "";
 
 
@@ -1190,30 +1363,45 @@ function subtractPoints(){
 
 
 
-/* 兑换奖励 */
+/* =========================
+   女朋友兑换奖励
+========================= */
 
 function redeem(id){
 
-  if(currentRole !== "girl")
+  if(
+    currentRole !== "girl"
+  ){
+
     return;
+
+  }
 
 
   const r =
+
     data.rewards.find(
+
       function(x){
 
         return Number(x.id)
           === Number(id);
 
       }
+
     );
 
 
-  if(!r)
+  if(!r){
+
     return;
 
+  }
 
-  if(data.points < r.cost){
+
+  if(
+    data.points < r.cost
+  ){
 
     return alert(
       "积分不够哦 💗"
@@ -1233,7 +1421,8 @@ function redeem(id){
   }
 
 
-  data.points -= r.cost;
+  data.points -=
+    r.cost;
 
 
   data.records.push({
@@ -1260,26 +1449,41 @@ function redeem(id){
 
 
 
-/* 添加奖励 */
+/* =========================
+   男朋友添加奖励
+========================= */
 
 function addReward(){
 
-  if(currentRole !== "boy")
+  if(
+    currentRole !== "boy"
+  ){
+
     return;
+
+  }
 
 
   const name =
+
     document
-      .getElementById("rewardName")
+      .getElementById(
+        "rewardName"
+      )
       .value
       .trim();
 
 
   const cost =
+
     Number(
+
       document
-        .getElementById("rewardCost")
+        .getElementById(
+          "rewardCost"
+        )
         .value
+
     );
 
 
@@ -1311,12 +1515,16 @@ function addReward(){
 
 
   document
-    .getElementById("rewardName")
+    .getElementById(
+      "rewardName"
+    )
     .value = "";
 
 
   document
-    .getElementById("rewardCost")
+    .getElementById(
+      "rewardCost"
+    )
     .value = "";
 
 
@@ -1328,22 +1536,43 @@ function addReward(){
 
 
 
-/* 删除奖励 */
+/* =========================
+   男朋友删除奖励
+========================= */
 
 function deleteReward(id){
 
-  if(currentRole !== "boy")
+  if(
+    currentRole !== "boy"
+  ){
+
     return;
+
+  }
+
+
+  if(
+    !confirm(
+      "确定删除这个奖励吗？"
+    )
+  ){
+
+    return;
+
+  }
 
 
   data.rewards =
+
     data.rewards.filter(
+
       function(r){
 
         return Number(r.id)
           !== Number(id);
 
       }
+
     );
 
 
@@ -1355,7 +1584,9 @@ function deleteReward(id){
 
 
 
-/* 时间 */
+/* =========================
+   当前时间
+========================= */
 
 function now(){
 
@@ -1371,50 +1602,76 @@ function now(){
 
 
 
-/* 防止HTML注入 */
+/* =========================
+   防止 HTML 注入
+========================= */
 
 function escapeHtml(s){
 
   return String(s)
+
     .replace(
       /[&<>"']/g,
+
       function(m){
 
         return {
 
           "&":"&amp;",
+
           "<":"&lt;",
+
           ">":"&gt;",
+
           '"':"&quot;",
+
           "'":"&#39;"
 
         }[m];
 
       }
+
     );
 
 }
 
 
 
-/* 回车登录 */
+/* =========================
+   回车登录
+========================= */
 
 document
   .getElementById("password")
   .addEventListener(
+
     "keydown",
+
     function(e){
 
-      if(e.key === "Enter")
+      if(
+        e.key === "Enter"
+      ){
+
         login();
 
+      }
+
     }
+
   );
 
 
+
+/* =========================
+   页面开始
+========================= */
+
 render();
+
 
 </script>
 
 </body>
+
 </html>
