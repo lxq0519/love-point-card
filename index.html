@@ -2,484 +2,275 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我们的积分银行 ❤️</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>我们的积分小屋 💗</title>
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
-  background:linear-gradient(135deg,#fff0f5,#ffe4ec);
-  color:#542333;
+  background:linear-gradient(135deg,#fff0f5,#ffe4ec,#fff7fa);
+  color:#542b3a;
 }
-.container{
-  max-width:520px;
-  margin:auto;
-  padding:22px 16px 50px;
-}
-.header{
-  text-align:center;
-  padding:20px 10px;
-}
-.heart{font-size:55px}
-h1{margin:8px 0;font-size:28px}
-.subtitle{color:#a86a7e}
-
+.container{max-width:520px;margin:auto;padding:20px 16px 40px}
+.header{text-align:center;padding:20px 10px 14px}
+.heart{font-size:42px}.header h1{margin:6px 0;font-size:28px}.subtitle{color:#a56b7e}
 .card{
-  background:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.94);
   border-radius:24px;
   padding:22px;
-  margin:15px 0;
-  box-shadow:0 10px 30px rgba(180,80,110,.12);
+  margin:16px 0;
+  box-shadow:0 10px 30px rgba(190,90,120,.12);
 }
-
-.points{
-  text-align:center;
-  background:linear-gradient(135deg,#ff7fa2,#ff527f);
-  color:white;
+.center{text-align:center}
+label{display:block;margin:14px 0 7px;font-weight:600}
+select,input{
+  width:100%;padding:14px;border:1px solid #f1c8d6;border-radius:14px;
+  font-size:16px;background:#fff;outline:none
 }
-.points .number{
-  font-size:55px;
-  font-weight:800;
-  margin:8px 0;
-}
-.points small{opacity:.9}
-
 button{
-  border:0;
-  border-radius:15px;
-  padding:13px 18px;
-  font-size:16px;
-  cursor:pointer;
-  margin:5px;
+  border:0;border-radius:14px;padding:13px 18px;font-size:16px;
+  font-weight:600;cursor:pointer
 }
-.primary{
-  background:#ff5d88;
-  color:white;
+.primary{background:#f45b91;color:white}
+.secondary{background:#fff0f5;color:#d94178}
+.full{width:100%;margin-top:18px}
+.notice{font-size:14px;line-height:1.8;color:#a56b7e;margin-top:15px}
+.hidden{display:none!important}
+.points{
+  background:linear-gradient(135deg,#ff6f9d,#f83f7c);
+  color:white;text-align:center;border-radius:26px;padding:26px 18px;
 }
-.secondary{
-  background:#ffe1e9;
-  color:#a53658;
-}
-.danger{
-  background:#eee;
-  color:#777;
-}
-
-input,select{
-  width:100%;
-  padding:14px;
-  border:1px solid #ffd0dc;
-  border-radius:13px;
-  margin:7px 0 12px;
-  font-size:16px;
-  outline:none;
-}
-label{
-  font-size:14px;
-  color:#8c5668;
-}
-
+.points small{font-size:16px}.number{font-size:68px;font-weight:800;line-height:1.1;margin:8px}
 .reward{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:15px 0;
-  border-bottom:1px solid #ffe4eb;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:16px 0;border-bottom:1px solid #f7dce5
 }
 .reward:last-child{border-bottom:0}
-.reward-title{font-weight:bold}
-.reward-cost{color:#ff4f7c;font-size:14px}
-
-.record{
-  padding:12px 0;
-  border-bottom:1px solid #ffe4eb;
-  font-size:14px;
-}
-.record:last-child{border-bottom:0}
-.plus{color:#e84672;font-weight:bold}
-
-.hidden{display:none}
-.center{text-align:center}
-.footer{
-  text-align:center;
-  color:#b47b8d;
-  font-size:12px;
-  margin-top:25px;
-}
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px;
-}
-.tabs button{flex:1}
-.active{
-  background:#ff5d88!important;
-  color:white!important;
-}
-.notice{
-  background:#fff6f8;
-  padding:12px;
-  border-radius:13px;
-  font-size:13px;
-  color:#9b6172;
-}
+.reward h3{margin:0 0 5px}.cost{color:#ef5b8a}
+.reward button{min-width:82px}
+.record{padding:10px 0;border-bottom:1px solid #f5dfe6;font-size:14px}
+.footer{text-align:center;color:#b17b8d;padding:20px;font-size:13px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.success{background:#edfff4;color:#21864c;padding:12px;border-radius:12px;margin-top:12px}
+.danger{background:#fff0f0;color:#b53d3d}
 </style>
 </head>
-
 <body>
-
 <div class="container">
 
   <div class="header">
     <div class="heart">💗</div>
-    <h1>我们的积分银行</h1>
+    <h1>我们的积分小屋</h1>
     <div class="subtitle">只属于我们两个人的小世界</div>
   </div>
 
   <!-- 登录 -->
-  <div id="loginPage" class="card">
-    <h2 class="center">💕 欢迎回来</h2>
+  <section id="loginPage" class="card">
+    <h2 class="center">💗 欢迎回来</h2>
 
     <label>请选择身份</label>
     <select id="role">
-      <option value="girl">黎子雅 · 女朋友</option>
-      <option value="boy">林嘉钦 · 男朋友</option>
+      <option value="girl">女朋友 · 黎子雅</option>
+      <option value="boy">男朋友 · 林嘉钦</option>
     </select>
 
     <label>登录密码</label>
-    <input id="password" type="password" placeholder="输入密码">
+    <input id="password" type="password" inputmode="numeric" maxlength="4" placeholder="请输入密码">
 
-    <button class="primary" style="width:100%" onclick="login()">
-      💗 进入我们的积分银行
-    </button>
+    <button class="primary full" onclick="login()">进入我们的小世界</button>
 
-    <div class="notice">
-      女朋友密码：1314<br>
-      男朋友密码：520
+    <div class="notice center">
+      女朋友密码：1220<br>
+      男朋友密码：0310
     </div>
-  </div>
+    <div id="loginMsg"></div>
+  </section>
 
   <!-- 主页面 -->
-  <div id="mainPage" class="hidden">
+  <section id="mainPage" class="hidden">
 
     <div class="card points">
-      <small>黎子雅的当前积分</small>
+      <small id="pointsOwner">黎子雅的当前积分</small>
       <div class="number" id="points">0</div>
       <div>❤️ 每一分都是嘉钦给你的心意</div>
     </div>
 
     <div class="card center">
-      <div>💕 我们已经在一起</div>
-      <h2 id="days">0 天</h2>
+      <div style="font-size:22px">💕 我们已经在一起</div>
+      <h2 id="days" style="font-size:38px;margin:8px 0">0 天</h2>
       <div class="subtitle">从 2026 年 3 月 10 日开始</div>
     </div>
 
-    <!-- 女朋友 -->
     <div id="girlPanel">
-
       <div class="card">
         <h2>🎁 我的奖励</h2>
         <div id="rewards"></div>
       </div>
-
-      <div class="card">
-        <h2>📜 我的积分记录</h2>
-        <div id="records"></div>
-      </div>
-
     </div>
 
-    <!-- 男朋友 -->
     <div id="boyPanel" class="hidden">
-
       <div class="card">
-        <h2>💌 给女朋友发积分</h2>
-
-        <label>积分数量</label>
-        <input id="amount" type="number" placeholder="例如：10">
-
-        <label>发放理由</label>
-        <input id="reason" placeholder="例如：今天特别乖 ❤️">
-
-        <button class="primary" style="width:100%" onclick="givePoints()">
-          💗 发放积分
-        </button>
+        <h2>💝 给子雅加积分</h2>
+        <div class="row">
+          <input id="changePoints" type="number" inputmode="numeric" placeholder="积分">
+          <button class="primary" onclick="addPoints()">增加</button>
+        </div>
+        <button class="secondary full" onclick="subtractPoints()">扣除积分</button>
       </div>
 
       <div class="card">
         <h2>🎁 奖励管理</h2>
-
-        <label>奖励名称</label>
-        <input id="rewardName" placeholder="例如：奶茶一杯 🧋">
-
-        <label>需要积分</label>
-        <input id="rewardCost" type="number" placeholder="例如：50">
-
-        <button class="primary" style="width:100%" onclick="addReward()">
-          ➕ 添加奖励
-        </button>
-
-        <div id="adminRewards"></div>
+        <input id="rewardName" placeholder="奖励名称，例如：奶茶一杯 🧋">
+        <input id="rewardCost" type="number" inputmode="numeric" placeholder="需要多少积分" style="margin-top:10px">
+        <button class="primary full" onclick="addReward()">＋ 添加奖励</button>
+        <div id="adminRewards" style="margin-top:12px"></div>
       </div>
 
       <div class="card">
-        <h2>📜 全部记录</h2>
+        <h2>📖 全部记录</h2>
         <div id="adminRecords"></div>
       </div>
+    </div>
 
+    <div class="card">
+      <h2>💌 我们的记录</h2>
+      <div id="records"></div>
     </div>
 
     <div class="center">
       <button class="secondary" onclick="logout()">退出登录</button>
     </div>
+  </section>
 
-  </div>
-
-  <div class="footer">
-    林嘉钦 ❤️ 黎子雅<br>
-    Love is made of little moments.
-  </div>
-
+  <div class="footer">林嘉钦 ❤️ 黎子雅<br>Love is made of little moments.</div>
 </div>
 
 <script>
+const PASSWORDS = { girl:"1220", boy:"0310" };
+const START_DATE = new Date("2026-03-10T00:00:00");
 
-let data = JSON.parse(localStorage.getItem("loveBank")) || {
-  points:100,
-  records:[
-    {
-      amount:100,
-      reason:"初始积分 ❤️",
-      time:new Date().toLocaleString()
-    }
-  ],
-  rewards:[
-    {name:"奶茶一杯 🧋",cost:50},
-    {name:"陪你看电影 🎬",cost:100},
-    {name:"请你吃大餐 🍰",cost:200},
-    {name:"神秘惊喜 🎁",cost:500}
-  ]
-};
+const defaultRewards = [
+  {id:1,name:"奶茶一杯 🧋",cost:50},
+  {id:2,name:"陪你看电影 🎬",cost:100},
+  {id:3,name:"请你吃大餐 🍰",cost:200}
+];
 
-let currentRole = "";
-
-function save(){
-  localStorage.setItem("loveBank",JSON.stringify(data));
+let data = JSON.parse(localStorage.getItem("loveBank") || "null");
+if(!data){
+  data = {points:0, rewards:defaultRewards, records:[]};
+  save();
 }
+if(!Array.isArray(data.rewards)) data.rewards = defaultRewards;
+if(!Array.isArray(data.records)) data.records = [];
+let currentRole = null;
+
+function save(){localStorage.setItem("loveBank",JSON.stringify(data));}
 
 function login(){
-
   const role=document.getElementById("role").value;
   const password=document.getElementById("password").value;
-
-  if(
-    (role==="girl" && password==="1314") ||
-    (role==="boy" && password==="520")
-  ){
-
-    currentRole=role;
-
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("mainPage").classList.remove("hidden");
-
-    if(role==="girl"){
-      document.getElementById("girlPanel").classList.remove("hidden");
-      document.getElementById("boyPanel").classList.add("hidden");
-    }else{
-      document.getElementById("girlPanel").classList.add("hidden");
-      document.getElementById("boyPanel").classList.remove("hidden");
-    }
-
-    render();
-
-  }else{
-    alert("密码不对哦 ❤️");
+  const msg=document.getElementById("loginMsg");
+  if(password !== PASSWORDS[role]){
+    msg.innerHTML='<div class="notice center" style="color:#c43d61">密码不正确，请再试一次 💗</div>';
+    return;
   }
+  currentRole=role;
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("mainPage").classList.remove("hidden");
+  document.getElementById("girlPanel").classList.toggle("hidden",role!=="girl");
+  document.getElementById("boyPanel").classList.toggle("hidden",role!=="boy");
+  render();
 }
 
 function logout(){
-  currentRole="";
+  currentRole=null;
+  document.getElementById("password").value="";
   document.getElementById("mainPage").classList.add("hidden");
   document.getElementById("loginPage").classList.remove("hidden");
-  document.getElementById("password").value="";
-}
-
-function givePoints(){
-
-  const amount=Number(document.getElementById("amount").value);
-  const reason=document.getElementById("reason").value.trim();
-
-  if(!amount || amount<=0){
-    alert("请输入正确的积分数量");
-    return;
-  }
-
-  if(!reason){
-    alert("请输入发放理由 ❤️");
-    return;
-  }
-
-  data.points+=amount;
-
-  data.records.unshift({
-    amount:amount,
-    reason:reason,
-    time:new Date().toLocaleString()
-  });
-
-  save();
-
-  document.getElementById("amount").value="";
-  document.getElementById("reason").value="";
-
-  render();
-
-  alert("积分发放成功啦 💗");
-}
-
-function addReward(){
-
-  const name=document.getElementById("rewardName").value.trim();
-  const cost=Number(document.getElementById("rewardCost").value);
-
-  if(!name || !cost){
-    alert("请填写完整");
-    return;
-  }
-
-  data.rewards.push({
-    name:name,
-    cost:cost
-  });
-
-  save();
-
-  document.getElementById("rewardName").value="";
-  document.getElementById("rewardCost").value="";
-
-  render();
-
-  alert("奖励添加成功 🎁");
-}
-
-function redeem(index){
-
-  const reward=data.rewards[index];
-
-  if(data.points<reward.cost){
-    alert("积分还不够哦，再努力一点点 ❤️");
-    return;
-  }
-
-  if(!confirm("确定要兑换「"+reward.name+"」吗？")){
-    return;
-  }
-
-  data.points-=reward.cost;
-
-  data.records.unshift({
-    amount:-reward.cost,
-    reason:"兑换奖励："+reward.name,
-    time:new Date().toLocaleString()
-  });
-
-  save();
-  render();
-
-  alert("兑换成功！记得找男朋友领取奖励哦 💕");
-}
-
-function deleteReward(index){
-
-  if(!confirm("确定删除这个奖励吗？")){
-    return;
-  }
-
-  data.rewards.splice(index,1);
-  save();
-  render();
 }
 
 function render(){
-
   document.getElementById("points").textContent=data.points;
-
-  let start=new Date("2026-03-10T00:00:00");
-  let now=new Date();
-  let days=Math.floor((now-start)/(1000*60*60*24));
-
+  document.getElementById("pointsOwner").textContent="黎子雅的当前积分";
+  const days=Math.max(0,Math.floor((new Date()-START_DATE)/86400000));
   document.getElementById("days").textContent=days+" 天";
 
-  // 女朋友奖励
-  let rewardsHTML="";
+  document.getElementById("rewards").innerHTML=data.rewards.map(r=>`
+    <div class="reward">
+      <div><h3>${escapeHtml(r.name)}</h3><div class="cost">${r.cost} 积分</div></div>
+      <button class="primary" onclick="redeem(${r.id})">兑换</button>
+    </div>`).join("");
 
-  data.rewards.forEach((r,i)=>{
+  document.getElementById("adminRewards").innerHTML=data.rewards.map(r=>`
+    <div class="reward">
+      <div><b>${escapeHtml(r.name)}</b><div class="cost">${r.cost} 积分</div></div>
+      <button class="secondary danger" onclick="deleteReward(${r.id})">删除</button>
+    </div>`).join("");
 
-    rewardsHTML+=`
-      <div class="reward">
-        <div>
-          <div class="reward-title">${r.name}</div>
-          <div class="reward-cost">${r.cost} 积分</div>
-        </div>
-
-        <button class="primary" onclick="redeem(${i})">
-          兑换
-        </button>
-      </div>
-    `;
-  });
-
-  document.getElementById("rewards").innerHTML=
-    rewardsHTML || "<div class='center'>暂时没有奖励哦 💕</div>";
-
-  // 女朋友记录
-  let recordsHTML="";
-
-  data.records.forEach(r=>{
-
-    recordsHTML+=`
-      <div class="record">
-        <div>
-          ${r.amount>0
-          ? `<span class="plus">+${r.amount} 积分</span>`
-          : `<span style="color:#777">${r.amount} 积分</span>`}
-        </div>
-        <div>${r.reason}</div>
-        <small>${r.time}</small>
-      </div>
-    `;
-  });
-
-  document.getElementById("records").innerHTML=
-    recordsHTML || "暂无记录";
-
-  // 男朋友奖励管理
-  let adminRewards="";
-
-  data.rewards.forEach((r,i)=>{
-
-    adminRewards+=`
-      <div class="record">
-        🎁 ${r.name} — ${r.cost}积分
-        <button class="danger" onclick="deleteReward(${i})">
-          删除
-        </button>
-      </div>
-    `;
-  });
-
-  document.getElementById("adminRewards").innerHTML=adminRewards;
-
-  // 男朋友记录
-  document.getElementById("adminRecords").innerHTML=recordsHTML;
+  const records=data.records.length ? data.records.slice().reverse().map(x=>`
+    <div class="record">${escapeHtml(x.text)}<br><span style="color:#ad7a8c">${escapeHtml(x.time)}</span></div>`).join("")
+    : '<div class="notice">还没有记录 💕</div>';
+  document.getElementById("records").innerHTML=records;
+  document.getElementById("adminRecords").innerHTML=records;
 }
 
+function addPoints(){
+  const n=Number(document.getElementById("changePoints").value);
+  if(!Number.isFinite(n)||n<=0)return alert("请输入正确的积分");
+  data.points+=Math.floor(n);
+  data.records.push({text:`嘉钦给子雅增加了 ${Math.floor(n)} 积分 💗`,time:now()});
+  document.getElementById("changePoints").value="";
+  save();render();
+}
+
+function subtractPoints(){
+  const n=Number(document.getElementById("changePoints").value);
+  if(!Number.isFinite(n)||n<=0)return alert("请输入正确的积分");
+  data.points=Math.max(0,data.points-Math.floor(n));
+  data.records.push({text:`扣除了 ${Math.floor(n)} 积分`,time:now()});
+  document.getElementById("changePoints").value="";
+  save();render();
+}
+
+function redeem(id){
+  const r=data.rewards.find(x=>x.id===id);
+  if(!r)return;
+  if(data.points<r.cost)return alert("积分不够哦 💗");
+  if(!confirm(`确定用 ${r.cost} 积分兑换「${r.name}」吗？`))return;
+  data.points-=r.cost;
+  data.records.push({text:`黎子雅兑换了「${r.name}」，-${r.cost} 积分 🎁`,time:now()});
+  save();render();
+  alert("兑换成功啦！💕");
+}
+
+function addReward(){
+  const name=document.getElementById("rewardName").value.trim();
+  const cost=Number(document.getElementById("rewardCost").value);
+  if(!name||!Number.isFinite(cost)||cost<=0)return alert("请填写奖励名称和正确的积分");
+  data.rewards.push({id:Date.now(),name,cost:Math.floor(cost)});
+  document.getElementById("rewardName").value="";
+  document.getElementById("rewardCost").value="";
+  save();render();
+}
+
+function deleteReward(id){
+  data.rewards=data.rewards.filter(r=>r.id!==id);
+  save();render();
+}
+
+function now(){
+  return new Date().toLocaleString("zh-CN",{hour12:false});
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+document.getElementById("password").addEventListener("keydown",e=>{
+  if(e.key==="Enter")login();
+});
 render();
-
 </script>
-
 </body>
 </html>
