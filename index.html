@@ -667,22 +667,17 @@ let data = {
 
 let currentRole = null;
 
-let dataListenerAttached = false;
-
 let migrationRunning = false;
 
 
 
 /* ==================================
-   把旧数组转换成新对象
+   数据兼容转换
 ================================== */
 
 function convertRewards(value){
 
-  if(
-    !value ||
-    typeof value !== "object"
-  ){
+  if(!value || typeof value !== "object"){
 
     const result = {};
 
@@ -707,25 +702,17 @@ function convertRewards(value){
 
     value.forEach(function(r,index){
 
-      if(!r)
-        return;
+      if(!r) return;
 
-      const id =
-        String(
-          r.id !== undefined
-            ? r.id
-            : index
-        );
+      const id = String(r.id !== undefined ? r.id : index);
 
       result[id] = {
 
         id:id,
 
-        name:
-          String(r.name || ""),
+        name: String(r.name || ""),
 
-        cost:
-          Number(r.cost) || 0
+        cost: Number(r.cost) || 0
 
       };
 
@@ -744,10 +731,7 @@ function convertRewards(value){
 
 function convertRecords(value){
 
-  if(
-    !value ||
-    typeof value !== "object"
-  ){
+  if(!value || typeof value !== "object"){
 
     return {};
 
@@ -760,12 +744,9 @@ function convertRecords(value){
 
     value.forEach(function(r,index){
 
-      if(!r)
-        return;
+      if(!r) return;
 
-      result[
-        "old_" + index
-      ] = r;
+      result["old_" + index] = r;
 
     });
 
@@ -781,204 +762,69 @@ function convertRecords(value){
 
 
 /* ==================================
-   旧数据迁移
+   拉取并更新数据 (核心双保险逻辑)
 ================================== */
 
-function migrateData(){
+function fetchLatestData(){
 
-  if(migrationRunning)
-    return;
+  dataRef.once("value").then(function(snapshot){
 
-  migrationRunning = true;
+    if(!snapshot.exists()) return;
 
+    const raw = snapshot.val();
 
-  dataRef.transaction(
+    data = {
 
-    function(current){
+      points: Number(raw.points) || 0,
 
-      if(!current){
+      rewards: raw.rewards || {},
 
-        return {
+      records: raw.records || {}
 
-          points:0,
+    };
 
-          rewards:
-            convertRewards(null),
+    render();
 
-          records:{}
+  }).catch(function(err){
 
-        };
+    console.error("轮询数据拉取失败：", err);
 
-      }
-
-
-      const next = {
-        ...current
-      };
-
-
-      if(
-        Array.isArray(
-          current.rewards
-        )
-      ){
-
-        next.rewards =
-          convertRewards(
-            current.rewards
-          );
-
-      }
-      else if(
-        !current.rewards
-      ){
-
-        next.rewards =
-          convertRewards(null);
-
-      }
-
-
-      if(
-        Array.isArray(
-          current.records
-        )
-      ){
-
-        next.records =
-          convertRecords(
-            current.records
-          );
-
-      }
-      else if(
-        !current.records
-      ){
-
-        next.records = {};
-
-      }
-
-
-      next.points =
-        Number(
-          current.points
-        ) || 0;
-
-
-      return next;
-
-    },
-
-    function(error){
-
-      migrationRunning = false;
-
-
-      if(error){
-
-        console.error(
-          "数据迁移失败：",
-          error
-        );
-
-      }
-
-    }
-
-  );
+  });
 
 }
 
 
 
-/* ==================================
-   监听Firebase
-================================== */
+function initDataListener(){
 
-function startDataListener(){
+  // 1. Firebase WebSocket 实时监听
+  dataRef.on("value", function(snapshot){
 
-  if(dataListenerAttached)
-    return;
+    if(!snapshot.exists()) return;
 
+    const raw = snapshot.val();
 
-  dataListenerAttached = true;
+    data = {
 
+      points: Number(raw.points) || 0,
 
-  dataRef.on(
+      rewards: raw.rewards || {},
 
-    "value",
+      records: raw.records || {}
 
-    function(snapshot){
+    };
 
-      if(!snapshot.exists()){
+    render();
 
-        migrateData();
-
-        return;
-
-      }
+  });
 
 
-      const raw =
-        snapshot.val();
+  // 2. 强效保底：每 3 秒主动拉取一次最新数据（防止手机长连接断开）
+  setInterval(function(){
 
+    fetchLatestData();
 
-      /*
-        如果发现旧版数组，
-        先迁移，不直接覆盖。
-      */
-
-      if(
-        Array.isArray(
-          raw.rewards
-        )
-        ||
-        Array.isArray(
-          raw.records
-        )
-      ){
-
-        migrateData();
-
-        return;
-
-      }
-
-
-      data = {
-
-        points:
-          Number(raw.points) || 0,
-
-        rewards:
-          raw.rewards || {},
-
-        records:
-          raw.records || {}
-
-      };
-
-
-      render();
-
-    },
-
-    function(error){
-
-      console.error(
-        "Firebase读取失败：",
-        error
-      );
-
-
-      alert(
-        "同步失败，请检查Firebase规则。"
-      );
-
-    }
-
-  );
+  }, 3000);
 
 }
 
@@ -990,44 +836,23 @@ function startDataListener(){
 
 function login(){
 
-  const role =
-    document
-      .getElementById("role")
-      .value;
+  const role = document.getElementById("role").value;
 
+  const pin = document.getElementById("password").value;
 
-  const pin =
-    document
-      .getElementById("password")
-      .value;
-
-
-  const msg =
-    document
-      .getElementById("loginMsg");
+  const msg = document.getElementById("loginMsg");
 
 
   if(pin.length !== 4){
 
-    msg.innerHTML =
-
-      '<div class="notice center" ' +
-
-      'style="color:#c43d61">' +
-
-      '请输入4位密码 💗' +
-
-      '</div>';
+    msg.innerHTML = '<div class="notice center" style="color:#c43d61">请输入4位密码 💗</div>';
 
     return;
 
   }
 
 
-  if(
-    role === "girl" &&
-    pin !== "1220"
-  ){
+  if(role === "girl" && pin !== "1220"){
 
     showLoginError();
 
@@ -1036,10 +861,7 @@ function login(){
   }
 
 
-  if(
-    role === "boy" &&
-    pin !== "0310"
-  ){
+  if(role === "boy" && pin !== "0310"){
 
     showLoginError();
 
@@ -1050,44 +872,21 @@ function login(){
 
   msg.innerHTML = "";
 
-
-  currentRole =
-    role;
+  currentRole = role;
 
 
-  document
-    .getElementById("loginPage")
-    .classList
-    .add("hidden");
+  document.getElementById("loginPage").classList.add("hidden");
+
+  document.getElementById("mainPage").classList.remove("hidden");
 
 
-  document
-    .getElementById("mainPage")
-    .classList
-    .remove("hidden");
+  document.getElementById("girlPanel").classList.toggle("hidden", role !== "girl");
+
+  document.getElementById("boyPanel").classList.toggle("hidden", role !== "boy");
 
 
-  document
-    .getElementById("girlPanel")
-    .classList
-    .toggle(
-      "hidden",
-      role !== "girl"
-    );
-
-
-  document
-    .getElementById("boyPanel")
-    .classList
-    .toggle(
-      "hidden",
-      role !== "boy"
-    );
-
-
-  startDataListener();
-
-  render();
+  // 登录时立刻强制拉一次数据
+  fetchLatestData();
 
 }
 
@@ -1095,17 +894,9 @@ function login(){
 
 function showLoginError(){
 
-  document
-    .getElementById("loginMsg")
-    .innerHTML =
+  document.getElementById("loginMsg").innerHTML =
 
-    '<div class="notice center" ' +
-
-    'style="color:#c43d61">' +
-
-    '密码不正确，请再试一次 💗' +
-
-    '</div>';
+    '<div class="notice center" style="color:#c43d61">密码不正确，请再试一次 💗</div>';
 
 }
 
@@ -1119,93 +910,49 @@ function logout(){
 
   currentRole = null;
 
+  document.getElementById("mainPage").classList.add("hidden");
 
-  document
-    .getElementById("mainPage")
-    .classList
-    .add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
 
+  document.getElementById("password").value = "";
 
-  document
-    .getElementById("loginPage")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById("password")
-    .value = "";
-
-
-  document
-    .getElementById("loginMsg")
-    .innerHTML = "";
+  document.getElementById("loginMsg").innerHTML = "";
 
 }
 
 
 
 /* ==================================
-   安全读取记录
+   安全读取记录与奖励
 ================================== */
 
 function recordsArray(){
 
-  return Object.keys(
-    data.records || {}
-  )
+  return Object.keys(data.records || {})
 
   .map(function(key){
 
-    return {
-
-      key:key,
-
-      value:
-        data.records[key]
-
-    };
+    return { key:key, value:data.records[key] };
 
   })
 
-  .filter(function(x){
-
-    return x.value;
-
-  });
+  .filter(function(x){ return x.value; });
 
 }
 
 
 
-/* ==================================
-   奖励数组
-================================== */
-
 function rewardsArray(){
 
-  return Object.keys(
-    data.rewards || {}
-  )
+  return Object.keys(data.rewards || {})
 
   .map(function(key){
 
-    return {
-
-      key:key,
-
-      value:
-        data.rewards[key]
-
-    };
+    return { key:key, value:data.rewards[key] };
 
   })
 
-  .filter(function(x){
-
-    return x.value;
-
-  });
+  .filter(function(x){ return x.value; });
 
 }
 
@@ -1217,216 +964,111 @@ function rewardsArray(){
 
 function render(){
 
-  document
-    .getElementById("points")
-    .textContent =
-    data.points;
+  if(!currentRole) return;
 
 
-  document
-    .getElementById("pointsOwner")
-    .textContent =
-    "黎子雅的当前积分";
+  document.getElementById("points").textContent = data.points;
+
+  document.getElementById("pointsOwner").textContent = "黎子雅的当前积分";
 
 
+  const days = Math.max(0, Math.floor((new Date() - START_DATE) / 86400000));
 
-  const days =
-
-    Math.max(
-
-      0,
-
-      Math.floor(
-
-        (
-          new Date()
-          -
-          START_DATE
-        )
-        /
-        86400000
-
-      )
-
-    );
+  document.getElementById("days").textContent = days + " 天";
 
 
-  document
-    .getElementById("days")
-    .textContent =
-    days + " 天";
+  /* 奖励列表 */
 
+  const rewards = rewardsArray();
 
+  document.getElementById("rewards").innerHTML = rewards.length ?
 
-  /* 奖励 */
+    rewards.map(function(item){
 
-  const rewards =
-    rewardsArray();
+      const r = item.value;
 
+      return `
 
-  document
-    .getElementById("rewards")
-    .innerHTML =
+        <div class="reward">
 
-    rewards.length
+          <div>
 
-      ?
+            <h3>${escapeHtml(r.name)}</h3>
 
-      rewards.map(function(item){
-
-        const r =
-          item.value;
-
-
-        return `
-
-          <div class="reward">
-
-            <div>
-
-              <h3>
-                ${escapeHtml(r.name)}
-              </h3>
-
-              <div class="cost">
-                ${Number(r.cost)} 积分
-              </div>
-
-            </div>
-
-
-            <button
-              class="primary"
-              onclick="redeem('${item.key}')"
-            >
-              兑换
-            </button>
+            <div class="cost">${Number(r.cost)} 积分</div>
 
           </div>
 
-        `;
+          <button class="primary" onclick="redeem('${item.key}')">兑换</button>
 
-      }).join("")
+        </div>
 
-      :
+      `;
 
-      '<div class="notice">' +
-      '暂时没有奖励 💕' +
-      '</div>';
+    }).join("") : '<div class="notice">暂时没有奖励 💕</div>';
 
 
 
   /* 男朋友奖励管理 */
 
-  document
-    .getElementById("adminRewards")
-    .innerHTML =
+  document.getElementById("adminRewards").innerHTML = rewards.length ?
 
-    rewards.length
+    rewards.map(function(item){
 
-      ?
+      const r = item.value;
 
-      rewards.map(function(item){
+      return `
 
-        const r =
-          item.value;
+        <div class="reward">
 
+          <div>
 
-        return `
+            <b>${escapeHtml(r.name)}</b>
 
-          <div class="reward">
-
-            <div>
-
-              <b>
-                ${escapeHtml(r.name)}
-              </b>
-
-              <div class="cost">
-                ${Number(r.cost)} 积分
-              </div>
-
-            </div>
-
-
-            <button
-              class="secondary danger"
-              onclick="deleteReward('${item.key}')"
-            >
-              删除
-            </button>
+            <div class="cost">${Number(r.cost)} 积分</div>
 
           </div>
 
-        `;
+          <button class="secondary danger" onclick="deleteReward('${item.key}')">删除</button>
 
-      }).join("")
+        </div>
 
-      :
+      `;
 
-      '<div class="notice">' +
-      '暂时没有奖励' +
-      '</div>';
+    }).join("") : '<div class="notice">暂时没有奖励</div>';
 
 
 
-  /* 记录 */
+  /* 记录列表 */
 
-  const records =
-    recordsArray()
-      .reverse();
+  const records = recordsArray().reverse();
 
+  const recordHtml = records.length ?
 
-  const recordHtml =
+    records.map(function(item){
 
-    records.length
+      const x = item.value;
 
-      ?
+      return `
 
-      records.map(function(item){
+        <div class="record">
 
-        const x =
-          item.value;
+          ${escapeHtml(x.text)}
 
+          <br>
 
-        return `
+          <span style="color:#ad7a8c">${escapeHtml(x.time)}</span>
 
-          <div class="record">
+        </div>
 
-            ${escapeHtml(x.text)}
+      `;
 
-            <br>
-
-            <span
-              style="color:#ad7a8c"
-            >
-              ${escapeHtml(x.time)}
-            </span>
-
-          </div>
-
-        `;
-
-      }).join("")
-
-      :
-
-      '<div class="notice">' +
-      '还没有记录 💕' +
-      '</div>';
+    }).join("") : '<div class="notice">还没有记录 💕</div>';
 
 
+  document.getElementById("records").innerHTML = recordHtml;
 
-  document
-    .getElementById("records")
-    .innerHTML =
-    recordHtml;
-
-
-  document
-    .getElementById("adminRecords")
-    .innerHTML =
-    recordHtml;
+  document.getElementById("adminRecords").innerHTML = recordHtml;
 
 }
 
@@ -1436,42 +1078,19 @@ function render(){
    增加记录
 ================================== */
 
-function addRecordInTransaction(
-  current,
-  text
-){
+function addRecordInTransaction(current, text){
 
-  if(!current)
-    current = {};
+  if(!current) current = {};
 
-
-  if(
-    !current.records ||
-    typeof current.records !== "object" ||
-    Array.isArray(current.records)
-  ){
+  if(!current.records || typeof current.records !== "object" || Array.isArray(current.records)){
 
     current.records = {};
 
   }
 
+  const key = firebase.database().ref().push().key;
 
-  const key =
-    firebase
-      .database()
-      .ref()
-      .push()
-      .key;
-
-
-  current.records[key] = {
-
-    text:text,
-
-    time:now()
-
-  };
-
+  current.records[key] = { text:text, time:now() };
 
   return current;
 
@@ -1485,105 +1104,52 @@ function addRecordInTransaction(
 
 function addPoints(){
 
-  if(
-    currentRole !== "boy"
-  )
-    return;
+  if(currentRole !== "boy") return;
 
+  const n = Number(document.getElementById("changePoints").value);
 
-  const n =
-    Number(
+  if(!Number.isFinite(n) || n <= 0){
 
-      document
-        .getElementById(
-          "changePoints"
-        )
-        .value
-
-    );
-
-
-  if(
-    !Number.isFinite(n) ||
-    n <= 0
-  ){
-
-    return alert(
-      "请输入正确的积分"
-    );
+    return alert("请输入正确的积分");
 
   }
 
+  const amount = Math.floor(n);
 
-  const amount =
-    Math.floor(n);
-
-
-  document
-    .getElementById(
-      "changePoints"
-    )
-    .value = "";
+  document.getElementById("changePoints").value = "";
 
 
-  dataRef.transaction(
+  dataRef.transaction(function(current){
 
-    function(current){
+    if(!current){
 
-      if(!current){
-
-        current = {
-
-          points:0,
-
-          rewards:
-            convertRewards(null),
-
-          records:{}
-
-        };
-
-      }
-
-
-      current.points =
-        Number(
-          current.points
-        ) || 0;
-
-
-      current.points +=
-        amount;
-
-
-      addRecordInTransaction(
-
-        current,
-
-        `嘉钦给子雅增加了 ${amount} 积分 💗`
-
-      );
-
-
-      return current;
-
-    },
-
-    function(error){
-
-      if(error){
-
-        alert(
-          "增加积分失败，请重试"
-        );
-
-        console.error(error);
-
-      }
+      current = { points:0, rewards:convertRewards(null), records:{} };
 
     }
 
-  );
+    current.points = Number(current.points) || 0;
+
+    current.points += amount;
+
+    addRecordInTransaction(current, `嘉钦给子雅增加了 ${amount} 积分 💗`);
+
+    return current;
+
+  }, function(error){
+
+    if(error){
+
+      alert("增加积分失败，请重试");
+
+      console.error(error);
+
+    } else {
+
+      fetchLatestData();
+
+    }
+
+  });
 
 }
 
@@ -1595,96 +1161,48 @@ function addPoints(){
 
 function subtractPoints(){
 
-  if(
-    currentRole !== "boy"
-  )
-    return;
+  if(currentRole !== "boy") return;
 
+  const n = Number(document.getElementById("changePoints").value);
 
-  const n =
-    Number(
+  if(!Number.isFinite(n) || n <= 0){
 
-      document
-        .getElementById(
-          "changePoints"
-        )
-        .value
-
-    );
-
-
-  if(
-    !Number.isFinite(n) ||
-    n <= 0
-  ){
-
-    return alert(
-      "请输入正确的积分"
-    );
+    return alert("请输入正确的积分");
 
   }
 
+  const amount = Math.floor(n);
 
-  const amount =
-    Math.floor(n);
-
-
-  document
-    .getElementById(
-      "changePoints"
-    )
-    .value = "";
+  document.getElementById("changePoints").value = "";
 
 
-  dataRef.transaction(
+  dataRef.transaction(function(current){
 
-    function(current){
+    if(!current) return current;
 
-      if(!current)
-        return current;
+    current.points = Number(current.points) || 0;
 
+    current.points = Math.max(0, current.points - amount);
 
-      current.points =
-        Number(
-          current.points
-        ) || 0;
+    addRecordInTransaction(current, `扣除了 ${amount} 积分`);
 
+    return current;
 
-      current.points =
-        Math.max(
-          0,
-          current.points - amount
-        );
+  }, function(error){
 
+    if(error){
 
-      addRecordInTransaction(
+      alert("扣除积分失败，请重试");
 
-        current,
+      console.error(error);
 
-        `扣除了 ${amount} 积分`
+    } else {
 
-      );
-
-
-      return current;
-
-    },
-
-    function(error){
-
-      if(error){
-
-        alert(
-          "扣除积分失败，请重试"
-        );
-
-        console.error(error);
-
-      }
+      fetchLatestData();
 
     }
 
-  );
+  });
 
 }
 
@@ -1696,108 +1214,60 @@ function subtractPoints(){
 
 function redeem(key){
 
-  if(
-    currentRole !== "girl"
-  )
-    return;
+  if(currentRole !== "girl") return;
+
+  const item = data.rewards[key];
+
+  if(!item) return;
+
+  const cost = Number(item.cost);
 
 
-  const item =
-    data.rewards[key];
+  if(data.points < cost){
 
-
-  if(!item)
-    return;
-
-
-  const cost =
-    Number(item.cost);
-
-
-  if(
-    data.points < cost
-  ){
-
-    return alert(
-      "积分不够哦 💗"
-    );
+    return alert("积分不够哦 💗");
 
   }
 
 
-  if(
-    !confirm(
-      `确定用 ${cost} 积分兑换「${item.name}」吗？`
-    )
-  ){
+  if(!confirm(`确定用 ${cost} 积分兑换「${item.name}」吗？`)){
 
     return;
 
   }
 
 
-  dataRef.transaction(
+  dataRef.transaction(function(current){
 
-    function(current){
+    if(!current) return current;
 
-      if(!current)
-        return current;
+    current.points = Number(current.points) || 0;
 
+    if(current.points < cost) return;
 
-      current.points =
-        Number(
-          current.points
-        ) || 0;
+    current.points -= cost;
 
+    addRecordInTransaction(current, `黎子雅兑换了「${item.name}」，-${cost} 积分 🎁`);
 
-      if(
-        current.points < cost
-      ){
+    return current;
 
-        return;
+  }, function(error){
 
-      }
+    if(error){
 
+      alert("兑换失败，请重试");
 
-      current.points -=
-        cost;
+      console.error(error);
 
+    } else {
 
-      addRecordInTransaction(
+      alert("兑换成功啦！💕");
 
-        current,
-
-        `黎子雅兑换了「${item.name}」，-${cost} 积分 🎁`
-
-      );
-
-
-      return current;
-
-    },
-
-    function(error){
-
-      if(error){
-
-        alert(
-          "兑换失败，请重试"
-        );
-
-        console.error(error);
-
-      }
-      else{
-
-        alert(
-          "兑换成功啦！💕"
-        );
-
-      }
+      fetchLatestData();
 
     }
 
-  );
+  });
 
 }
 
@@ -1809,95 +1279,45 @@ function redeem(key){
 
 function addReward(){
 
-  if(
-    currentRole !== "boy"
-  )
-    return;
+  if(currentRole !== "boy") return;
+
+  const name = document.getElementById("rewardName").value.trim();
+
+  const cost = Number(document.getElementById("rewardCost").value);
 
 
-  const name =
+  if(!name || !Number.isFinite(cost) || cost <= 0){
 
-    document
-      .getElementById(
-        "rewardName"
-      )
-      .value
-      .trim();
-
-
-  const cost =
-
-    Number(
-
-      document
-        .getElementById(
-          "rewardCost"
-        )
-        .value
-
-    );
-
-
-  if(
-    !name ||
-    !Number.isFinite(cost) ||
-    cost <= 0
-  ){
-
-    return alert(
-      "请填写奖励名称和正确的积分"
-    );
+    return alert("请填写奖励名称和正确的积分");
 
   }
 
 
-  const rewardId =
-    dataRef
-      .child("rewards")
-      .push()
-      .key;
+  const rewardId = dataRef.child("rewards").push().key;
 
+  dataRef.child("rewards").child(rewardId).set({
 
-  dataRef
-    .child("rewards")
-    .child(rewardId)
-    .set({
+    id:rewardId,
 
-      id:rewardId,
+    name:name,
 
-      name:name,
+    cost:Math.floor(cost)
 
-      cost:
-        Math.floor(cost)
+  }).then(function(){
 
-    })
+    document.getElementById("rewardName").value = "";
 
-    .then(function(){
+    document.getElementById("rewardCost").value = "";
 
-      document
-        .getElementById(
-          "rewardName"
-        )
-        .value = "";
+    fetchLatestData();
 
+  }).catch(function(error){
 
-      document
-        .getElementById(
-          "rewardCost"
-        )
-        .value = "";
+    alert("添加奖励失败");
 
-    })
+    console.error(error);
 
-    .catch(function(error){
-
-      alert(
-        "添加奖励失败"
-      );
-
-      console.error(error);
-
-    });
+  });
 
 }
 
@@ -1909,122 +1329,66 @@ function addReward(){
 
 function deleteReward(key){
 
-  if(
-    currentRole !== "boy"
-  )
-    return;
+  if(currentRole !== "boy") return;
+
+  if(!confirm("确定删除这个奖励吗？")) return;
 
 
-  if(
-    !confirm(
-      "确定删除这个奖励吗？"
-    )
-  ){
+  dataRef.child("rewards").child(key).remove().then(function(){
 
-    return;
+    fetchLatestData();
 
-  }
+  }).catch(function(error){
 
+    alert("删除失败，请重试");
 
-  dataRef
-    .child("rewards")
-    .child(key)
-    .remove()
+    console.error(error);
 
-    .catch(function(error){
-
-      alert(
-        "删除失败，请重试"
-      );
-
-      console.error(error);
-
-    });
+  });
 
 }
 
 
 
 /* ==================================
-   当前时间
+   辅助函数
 ================================== */
 
 function now(){
 
-  return new Date()
-    .toLocaleString(
-
-      "zh-CN",
-
-      {
-        hour12:false
-      }
-
-    );
+  return new Date().toLocaleString("zh-CN", { hour12:false });
 
 }
 
-
-
-/* ==================================
-   HTML安全
-================================== */
 
 function escapeHtml(s){
 
-  return String(s)
+  return String(s).replace(/[&<>"']/g, function(m){
 
-    .replace(
+    return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[m];
 
-      /[&<>"']/g,
-
-      function(m){
-
-        return {
-
-          "&":"&amp;",
-
-          "<":"&lt;",
-
-          ">":"&gt;",
-
-          '"':"&quot;",
-
-          "'":"&#39;"
-
-        }[m];
-
-      }
-
-    );
+  });
 
 }
 
 
+document.getElementById("password").addEventListener("keydown", function(e){
 
-/* ==================================
-   回车登录
-================================== */
+  if(e.key === "Enter") login();
 
-document
-  .getElementById("password")
-  .addEventListener(
+});
 
-    "keydown",
 
-    function(e){
+// 页面切回焦点时立刻拉取一次
+document.addEventListener("visibilitychange", function() {
 
-      if(
-        e.key === "Enter"
-      ){
+  if (document.visibilityState === "visible") {
 
-        login();
+    fetchLatestData();
 
-      }
+  }
 
-    }
-
-  );
+});
 
 
 
@@ -2032,9 +1396,7 @@ document
    启动
 ================================== */
 
-startDataListener();
-
-render();
+initDataListener();
 
 
 </script>
