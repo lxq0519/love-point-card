@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -67,6 +66,7 @@ body{
   border-radius:24px;
   padding:22px;
   margin:16px 0;
+
   box-shadow:
     0 10px 30px
     rgba(190,90,120,.12);
@@ -102,11 +102,13 @@ input{
 
 button{
   border:0;
+
   border-radius:14px;
 
   padding:13px 18px;
 
   font-size:16px;
+
   font-weight:600;
 
   cursor:pointer;
@@ -163,6 +165,7 @@ button{
 
 .number{
   font-size:68px;
+
   font-weight:800;
 
   line-height:1.1;
@@ -245,8 +248,6 @@ button{
 
 <div class="container">
 
-
-  <!-- 顶部 -->
 
   <div class="header">
 
@@ -366,7 +367,7 @@ button{
 
 
 
-    <!-- 在一起多少天 -->
+    <!-- 在一起 -->
 
     <div class="card center">
 
@@ -421,7 +422,7 @@ button{
     >
 
 
-      <!-- 加减积分 -->
+      <!-- 积分 -->
 
       <div class="card">
 
@@ -502,7 +503,7 @@ button{
 
 
 
-      <!-- 全部记录 -->
+      <!-- 记录 -->
 
       <div class="card">
 
@@ -534,8 +535,6 @@ button{
 
 
 
-    <!-- 退出 -->
-
     <div class="center">
 
       <button
@@ -550,8 +549,6 @@ button{
   </section>
 
 
-
-  <!-- 底部 -->
 
   <div class="footer">
 
@@ -577,9 +574,9 @@ button{
 <script>
 
 
-/* =========================
-   Firebase 配置
-========================= */
+/* ==================================
+   Firebase
+================================== */
 
 const firebaseConfig = {
 
@@ -610,7 +607,6 @@ const firebaseConfig = {
 };
 
 
-
 firebase.initializeApp(
   firebaseConfig
 );
@@ -625,9 +621,9 @@ const dataRef =
 
 
 
-/* =========================
-   初始数据
-========================= */
+/* ==================================
+   基础数据
+================================== */
 
 const START_DATE =
   new Date(
@@ -638,19 +634,19 @@ const START_DATE =
 const defaultRewards = [
 
   {
-    id:1,
+    id:"1",
     name:"奶茶一杯 🧋",
     cost:50
   },
 
   {
-    id:2,
+    id:"2",
     name:"陪你看电影 🎬",
     cost:100
   },
 
   {
-    id:3,
+    id:"3",
     name:"请你吃大餐 🍰",
     cost:200
   }
@@ -662,10 +658,9 @@ let data = {
 
   points:0,
 
-  rewards:
-    defaultRewards,
+  rewards:{},
 
-  records:[]
+  records:{}
 
 };
 
@@ -674,11 +669,324 @@ let currentRole = null;
 
 let dataListenerAttached = false;
 
+let migrationRunning = false;
 
 
-/* =========================
+
+/* ==================================
+   把旧数组转换成新对象
+================================== */
+
+function convertRewards(value){
+
+  if(
+    !value ||
+    typeof value !== "object"
+  ){
+
+    const result = {};
+
+    defaultRewards.forEach(function(r){
+
+      result[r.id] = {
+        id:r.id,
+        name:r.name,
+        cost:r.cost
+      };
+
+    });
+
+    return result;
+
+  }
+
+
+  if(Array.isArray(value)){
+
+    const result = {};
+
+    value.forEach(function(r,index){
+
+      if(!r)
+        return;
+
+      const id =
+        String(
+          r.id !== undefined
+            ? r.id
+            : index
+        );
+
+      result[id] = {
+
+        id:id,
+
+        name:
+          String(r.name || ""),
+
+        cost:
+          Number(r.cost) || 0
+
+      };
+
+    });
+
+    return result;
+
+  }
+
+
+  return value;
+
+}
+
+
+
+function convertRecords(value){
+
+  if(
+    !value ||
+    typeof value !== "object"
+  ){
+
+    return {};
+
+  }
+
+
+  if(Array.isArray(value)){
+
+    const result = {};
+
+    value.forEach(function(r,index){
+
+      if(!r)
+        return;
+
+      result[
+        "old_" + index
+      ] = r;
+
+    });
+
+    return result;
+
+  }
+
+
+  return value;
+
+}
+
+
+
+/* ==================================
+   旧数据迁移
+================================== */
+
+function migrateData(){
+
+  if(migrationRunning)
+    return;
+
+  migrationRunning = true;
+
+
+  dataRef.transaction(
+
+    function(current){
+
+      if(!current){
+
+        return {
+
+          points:0,
+
+          rewards:
+            convertRewards(null),
+
+          records:{}
+
+        };
+
+      }
+
+
+      const next = {
+        ...current
+      };
+
+
+      if(
+        Array.isArray(
+          current.rewards
+        )
+      ){
+
+        next.rewards =
+          convertRewards(
+            current.rewards
+          );
+
+      }
+      else if(
+        !current.rewards
+      ){
+
+        next.rewards =
+          convertRewards(null);
+
+      }
+
+
+      if(
+        Array.isArray(
+          current.records
+        )
+      ){
+
+        next.records =
+          convertRecords(
+            current.records
+          );
+
+      }
+      else if(
+        !current.records
+      ){
+
+        next.records = {};
+
+      }
+
+
+      next.points =
+        Number(
+          current.points
+        ) || 0;
+
+
+      return next;
+
+    },
+
+    function(error){
+
+      migrationRunning = false;
+
+
+      if(error){
+
+        console.error(
+          "数据迁移失败：",
+          error
+        );
+
+      }
+
+    }
+
+  );
+
+}
+
+
+
+/* ==================================
+   监听Firebase
+================================== */
+
+function startDataListener(){
+
+  if(dataListenerAttached)
+    return;
+
+
+  dataListenerAttached = true;
+
+
+  dataRef.on(
+
+    "value",
+
+    function(snapshot){
+
+      if(!snapshot.exists()){
+
+        migrateData();
+
+        return;
+
+      }
+
+
+      const raw =
+        snapshot.val();
+
+
+      /*
+        如果发现旧版数组，
+        先迁移，不直接覆盖。
+      */
+
+      if(
+        Array.isArray(
+          raw.rewards
+        )
+        ||
+        Array.isArray(
+          raw.records
+        )
+      ){
+
+        migrateData();
+
+        return;
+
+      }
+
+
+      data = {
+
+        points:
+          Number(raw.points) || 0,
+
+        rewards:
+          raw.rewards || {},
+
+        records:
+          raw.records || {}
+
+      };
+
+
+      render();
+
+    },
+
+    function(error){
+
+      console.error(
+        "Firebase读取失败：",
+        error
+      );
+
+
+      alert(
+        "同步失败，请检查Firebase规则。"
+      );
+
+    }
+
+  );
+
+}
+
+
+
+/* ==================================
    登录
-========================= */
+================================== */
 
 function login(){
 
@@ -699,8 +1007,6 @@ function login(){
       .getElementById("loginMsg");
 
 
-  /* 必须4位 */
-
   if(pin.length !== 4){
 
     msg.innerHTML =
@@ -718,9 +1024,6 @@ function login(){
   }
 
 
-
-  /* 女朋友 */
-
   if(
     role === "girl" &&
     pin !== "1220"
@@ -732,9 +1035,6 @@ function login(){
 
   }
 
-
-
-  /* 男朋友 */
 
   if(
     role === "boy" &&
@@ -748,49 +1048,11 @@ function login(){
   }
 
 
-
-  /* 登录成功 */
-
   msg.innerHTML = "";
 
-  setLoggedInUI(role);
 
-}
-
-
-
-/* =========================
-   登录错误
-========================= */
-
-function showLoginError(){
-
-  const msg =
-    document
-      .getElementById("loginMsg");
-
-
-  msg.innerHTML =
-
-    '<div class="notice center" ' +
-
-    'style="color:#c43d61">' +
-
-    '密码不正确，请再试一次 💗' +
-
-    '</div>';
-
-}
-
-
-
-/* =========================
-   登录成功后的页面
-========================= */
-
-function setLoggedInUI(role){
-
-  currentRole = role;
+  currentRole =
+    role;
 
 
   document
@@ -831,9 +1093,27 @@ function setLoggedInUI(role){
 
 
 
-/* =========================
-   退出登录
-========================= */
+function showLoginError(){
+
+  document
+    .getElementById("loginMsg")
+    .innerHTML =
+
+    '<div class="notice center" ' +
+
+    'style="color:#c43d61">' +
+
+    '密码不正确，请再试一次 💗' +
+
+    '</div>';
+
+}
+
+
+
+/* ==================================
+   退出
+================================== */
 
 function logout(){
 
@@ -865,158 +1145,75 @@ function logout(){
 
 
 
-/* =========================
-   Firebase 实时同步
-========================= */
+/* ==================================
+   安全读取记录
+================================== */
 
-function startDataListener(){
+function recordsArray(){
 
-  if(dataListenerAttached){
+  return Object.keys(
+    data.records || {}
+  )
 
-    return;
+  .map(function(key){
 
-  }
+    return {
 
+      key:key,
 
-  dataListenerAttached = true;
+      value:
+        data.records[key]
 
+    };
 
-  dataRef.on(
+  })
 
-    "value",
+  .filter(function(x){
 
-    function(snapshot){
+    return x.value;
 
-      if(snapshot.exists()){
-
-        data =
-          snapshot.val();
-
-
-        /* 确保奖励是数组 */
-
-        if(
-          !Array.isArray(
-            data.rewards
-          )
-        ){
-
-          data.rewards =
-            defaultRewards;
-
-        }
-
-
-        /* 确保记录是数组 */
-
-        if(
-          !Array.isArray(
-            data.records
-          )
-        ){
-
-          data.records = [];
-
-        }
-
-
-        /* 确保积分是数字 */
-
-        if(
-          typeof data.points
-          !== "number"
-        ){
-
-          data.points =
-            Number(
-              data.points
-            ) || 0;
-
-        }
-
-      }
-
-      else{
-
-        /* 第一次使用 */
-
-        data = {
-
-          points:0,
-
-          rewards:
-            defaultRewards,
-
-          records:[]
-
-        };
-
-
-        dataRef
-          .set(data);
-
-      }
-
-
-      render();
-
-    },
-
-
-    function(error){
-
-      console.error(
-        "读取数据库失败：",
-        error
-      );
-
-
-      alert(
-        "读取同步数据失败，请检查 Firebase 规则。"
-      );
-
-    }
-
-  );
+  });
 
 }
 
 
 
-/* =========================
-   保存数据
-========================= */
+/* ==================================
+   奖励数组
+================================== */
 
-function save(){
+function rewardsArray(){
 
-  return dataRef
-    .set(data)
+  return Object.keys(
+    data.rewards || {}
+  )
 
-    .catch(function(error){
+  .map(function(key){
 
-      console.error(
-        "保存失败：",
-        error
-      );
+    return {
 
+      key:key,
 
-      alert(
-        "数据保存失败：" +
-        error.message
-      );
+      value:
+        data.rewards[key]
 
+    };
 
-      throw error;
+  })
 
-    });
+  .filter(function(x){
+
+    return x.value;
+
+  });
 
 }
 
 
 
-/* =========================
+/* ==================================
    页面渲染
-========================= */
+================================== */
 
 function render(){
 
@@ -1033,8 +1230,6 @@ function render(){
 
 
 
-  /* 在一起天数 */
-
   const days =
 
     Math.max(
@@ -1045,7 +1240,8 @@ function render(){
 
         (
           new Date()
-          - START_DATE
+          -
+          START_DATE
         )
         /
         86400000
@@ -1062,15 +1258,25 @@ function render(){
 
 
 
-  /* 女朋友看到的奖励 */
+  /* 奖励 */
+
+  const rewards =
+    rewardsArray();
+
 
   document
     .getElementById("rewards")
     .innerHTML =
 
-    data.rewards
+    rewards.length
 
-      .map(function(r){
+      ?
+
+      rewards.map(function(item){
+
+        const r =
+          item.value;
+
 
         return `
 
@@ -1083,14 +1289,15 @@ function render(){
               </h3>
 
               <div class="cost">
-                ${r.cost} 积分
+                ${Number(r.cost)} 积分
               </div>
 
             </div>
 
+
             <button
               class="primary"
-              onclick="redeem(${Number(r.id)})"
+              onclick="redeem('${item.key}')"
             >
               兑换
             </button>
@@ -1099,21 +1306,31 @@ function render(){
 
         `;
 
-      })
+      }).join("")
 
-      .join("");
+      :
+
+      '<div class="notice">' +
+      '暂时没有奖励 💕' +
+      '</div>';
 
 
 
-  /* 男朋友看到的奖励 */
+  /* 男朋友奖励管理 */
 
   document
     .getElementById("adminRewards")
     .innerHTML =
 
-    data.rewards
+    rewards.length
 
-      .map(function(r){
+      ?
+
+      rewards.map(function(item){
+
+        const r =
+          item.value;
+
 
         return `
 
@@ -1126,14 +1343,15 @@ function render(){
               </b>
 
               <div class="cost">
-                ${r.cost} 积分
+                ${Number(r.cost)} 积分
               </div>
 
             </div>
 
+
             <button
               class="secondary danger"
-              onclick="deleteReward(${Number(r.id)})"
+              onclick="deleteReward('${item.key}')"
             >
               删除
             </button>
@@ -1142,56 +1360,59 @@ function render(){
 
         `;
 
-      })
+      }).join("")
 
-      .join("");
+      :
+
+      '<div class="notice">' +
+      '暂时没有奖励' +
+      '</div>';
 
 
 
   /* 记录 */
 
   const records =
+    recordsArray()
+      .reverse();
 
-    data.records.length
+
+  const recordHtml =
+
+    records.length
 
       ?
 
-      data.records
+      records.map(function(item){
 
-        .slice()
+        const x =
+          item.value;
 
-        .reverse()
 
-        .map(function(x){
+        return `
 
-          return `
+          <div class="record">
 
-            <div class="record">
+            ${escapeHtml(x.text)}
 
-              ${escapeHtml(x.text)}
+            <br>
 
-              <br>
+            <span
+              style="color:#ad7a8c"
+            >
+              ${escapeHtml(x.time)}
+            </span>
 
-              <span
-                style="color:#ad7a8c"
-              >
-                ${escapeHtml(x.time)}
-              </span>
+          </div>
 
-            </div>
+        `;
 
-          `;
-
-        })
-
-        .join("")
+      }).join("")
 
       :
 
       '<div class="notice">' +
-
       '还没有记录 💕' +
-
       '</div>';
 
 
@@ -1199,35 +1420,78 @@ function render(){
   document
     .getElementById("records")
     .innerHTML =
-    records;
+    recordHtml;
 
 
   document
     .getElementById("adminRecords")
     .innerHTML =
-    records;
+    recordHtml;
 
 }
 
 
 
-/* =========================
-   男朋友增加积分
-========================= */
+/* ==================================
+   增加记录
+================================== */
+
+function addRecordInTransaction(
+  current,
+  text
+){
+
+  if(!current)
+    current = {};
+
+
+  if(
+    !current.records ||
+    typeof current.records !== "object" ||
+    Array.isArray(current.records)
+  ){
+
+    current.records = {};
+
+  }
+
+
+  const key =
+    firebase
+      .database()
+      .ref()
+      .push()
+      .key;
+
+
+  current.records[key] = {
+
+    text:text,
+
+    time:now()
+
+  };
+
+
+  return current;
+
+}
+
+
+
+/* ==================================
+   增加积分
+================================== */
 
 function addPoints(){
 
   if(
     currentRole !== "boy"
-  ){
-
+  )
     return;
-
-  }
 
 
   const n =
-
     Number(
 
       document
@@ -1255,21 +1519,6 @@ function addPoints(){
     Math.floor(n);
 
 
-  data.points +=
-    amount;
-
-
-  data.records.push({
-
-    text:
-      `嘉钦给子雅增加了 ${amount} 积分 💗`,
-
-    time:
-      now()
-
-  });
-
-
   document
     .getElementById(
       "changePoints"
@@ -1277,31 +1526,82 @@ function addPoints(){
     .value = "";
 
 
-  save();
+  dataRef.transaction(
 
-  render();
+    function(current){
+
+      if(!current){
+
+        current = {
+
+          points:0,
+
+          rewards:
+            convertRewards(null),
+
+          records:{}
+
+        };
+
+      }
+
+
+      current.points =
+        Number(
+          current.points
+        ) || 0;
+
+
+      current.points +=
+        amount;
+
+
+      addRecordInTransaction(
+
+        current,
+
+        `嘉钦给子雅增加了 ${amount} 积分 💗`
+
+      );
+
+
+      return current;
+
+    },
+
+    function(error){
+
+      if(error){
+
+        alert(
+          "增加积分失败，请重试"
+        );
+
+        console.error(error);
+
+      }
+
+    }
+
+  );
 
 }
 
 
 
-/* =========================
-   男朋友扣除积分
-========================= */
+/* ==================================
+   扣除积分
+================================== */
 
 function subtractPoints(){
 
   if(
     currentRole !== "boy"
-  ){
-
+  )
     return;
-
-  }
 
 
   const n =
-
     Number(
 
       document
@@ -1329,25 +1629,6 @@ function subtractPoints(){
     Math.floor(n);
 
 
-  data.points =
-
-    Math.max(
-      0,
-      data.points - amount
-    );
-
-
-  data.records.push({
-
-    text:
-      `扣除了 ${amount} 积分`,
-
-    time:
-      now()
-
-  });
-
-
   document
     .getElementById(
       "changePoints"
@@ -1355,52 +1636,86 @@ function subtractPoints(){
     .value = "";
 
 
-  save();
+  dataRef.transaction(
 
-  render();
+    function(current){
+
+      if(!current)
+        return current;
+
+
+      current.points =
+        Number(
+          current.points
+        ) || 0;
+
+
+      current.points =
+        Math.max(
+          0,
+          current.points - amount
+        );
+
+
+      addRecordInTransaction(
+
+        current,
+
+        `扣除了 ${amount} 积分`
+
+      );
+
+
+      return current;
+
+    },
+
+    function(error){
+
+      if(error){
+
+        alert(
+          "扣除积分失败，请重试"
+        );
+
+        console.error(error);
+
+      }
+
+    }
+
+  );
 
 }
 
 
 
-/* =========================
-   女朋友兑换奖励
-========================= */
+/* ==================================
+   兑换奖励
+================================== */
 
-function redeem(id){
+function redeem(key){
 
   if(
     currentRole !== "girl"
-  ){
-
+  )
     return;
 
-  }
+
+  const item =
+    data.rewards[key];
 
 
-  const r =
-
-    data.rewards.find(
-
-      function(x){
-
-        return Number(x.id)
-          === Number(id);
-
-      }
-
-    );
-
-
-  if(!r){
-
+  if(!item)
     return;
 
-  }
+
+  const cost =
+    Number(item.cost);
 
 
   if(
-    data.points < r.cost
+    data.points < cost
   ){
 
     return alert(
@@ -1412,7 +1727,7 @@ function redeem(id){
 
   if(
     !confirm(
-      `确定用 ${r.cost} 积分兑换「${r.name}」吗？`
+      `确定用 ${cost} 积分兑换「${item.name}」吗？`
     )
   ){
 
@@ -1421,47 +1736,83 @@ function redeem(id){
   }
 
 
-  data.points -=
-    r.cost;
+  dataRef.transaction(
+
+    function(current){
+
+      if(!current)
+        return current;
 
 
-  data.records.push({
-
-    text:
-      `黎子雅兑换了「${r.name}」，-${r.cost} 积分 🎁`,
-
-    time:
-      now()
-
-  });
+      current.points =
+        Number(
+          current.points
+        ) || 0;
 
 
-  save();
+      if(
+        current.points < cost
+      ){
 
-  render();
+        return;
+
+      }
 
 
-  alert(
-    "兑换成功啦！💕"
+      current.points -=
+        cost;
+
+
+      addRecordInTransaction(
+
+        current,
+
+        `黎子雅兑换了「${item.name}」，-${cost} 积分 🎁`
+
+      );
+
+
+      return current;
+
+    },
+
+    function(error){
+
+      if(error){
+
+        alert(
+          "兑换失败，请重试"
+        );
+
+        console.error(error);
+
+      }
+      else{
+
+        alert(
+          "兑换成功啦！💕"
+        );
+
+      }
+
+    }
+
   );
 
 }
 
 
 
-/* =========================
-   男朋友添加奖励
-========================= */
+/* ==================================
+   添加奖励
+================================== */
 
 function addReward(){
 
   if(
     currentRole !== "boy"
-  ){
-
+  )
     return;
-
-  }
 
 
   const name =
@@ -1500,55 +1851,68 @@ function addReward(){
   }
 
 
-  data.rewards.push({
-
-    id:
-      Date.now(),
-
-    name:
-      name,
-
-    cost:
-      Math.floor(cost)
-
-  });
+  const rewardId =
+    dataRef
+      .child("rewards")
+      .push()
+      .key;
 
 
-  document
-    .getElementById(
-      "rewardName"
-    )
-    .value = "";
+  dataRef
+    .child("rewards")
+    .child(rewardId)
+    .set({
+
+      id:rewardId,
+
+      name:name,
+
+      cost:
+        Math.floor(cost)
+
+    })
+
+    .then(function(){
+
+      document
+        .getElementById(
+          "rewardName"
+        )
+        .value = "";
 
 
-  document
-    .getElementById(
-      "rewardCost"
-    )
-    .value = "";
+      document
+        .getElementById(
+          "rewardCost"
+        )
+        .value = "";
 
+    })
 
-  save();
+    .catch(function(error){
 
-  render();
+      alert(
+        "添加奖励失败"
+      );
+
+      console.error(error);
+
+    });
 
 }
 
 
 
-/* =========================
-   男朋友删除奖励
-========================= */
+/* ==================================
+   删除奖励
+================================== */
 
-function deleteReward(id){
+function deleteReward(key){
 
   if(
     currentRole !== "boy"
-  ){
-
+  )
     return;
-
-  }
 
 
   if(
@@ -1562,55 +1926,56 @@ function deleteReward(id){
   }
 
 
-  data.rewards =
+  dataRef
+    .child("rewards")
+    .child(key)
+    .remove()
 
-    data.rewards.filter(
+    .catch(function(error){
 
-      function(r){
+      alert(
+        "删除失败，请重试"
+      );
 
-        return Number(r.id)
-          !== Number(id);
+      console.error(error);
 
-      }
-
-    );
-
-
-  save();
-
-  render();
+    });
 
 }
 
 
 
-/* =========================
+/* ==================================
    当前时间
-========================= */
+================================== */
 
 function now(){
 
   return new Date()
     .toLocaleString(
+
       "zh-CN",
+
       {
         hour12:false
       }
+
     );
 
 }
 
 
 
-/* =========================
-   防止 HTML 注入
-========================= */
+/* ==================================
+   HTML安全
+================================== */
 
 function escapeHtml(s){
 
   return String(s)
 
     .replace(
+
       /[&<>"']/g,
 
       function(m){
@@ -1637,9 +2002,9 @@ function escapeHtml(s){
 
 
 
-/* =========================
+/* ==================================
    回车登录
-========================= */
+================================== */
 
 document
   .getElementById("password")
@@ -1663,9 +2028,11 @@ document
 
 
 
-/* =========================
-   页面开始
-========================= */
+/* ==================================
+   启动
+================================== */
+
+startDataListener();
 
 render();
 
