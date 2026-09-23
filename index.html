@@ -1,2043 +1,276 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>我们的积分小屋 💗</title>
-
 <style>
-
-*{
-  box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
   margin:0;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "PingFang SC",
-    "Microsoft YaHei",
-    sans-serif;
-
-  background:
-    linear-gradient(
-      135deg,
-      #fff0f5,
-      #ffe4ec,
-      #fff7fa
-    );
-
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:linear-gradient(135deg,#fff0f5,#ffe4ec,#fff7fa);
   color:#542b3a;
 }
-
-.container{
-  max-width:520px;
-  margin:auto;
-  padding:20px 16px 40px;
-}
-
-.header{
-  text-align:center;
-  padding:20px 10px 14px;
-}
-
-.heart{
-  font-size:42px;
-}
-
-.header h1{
-  margin:6px 0;
-  font-size:28px;
-}
-
-.subtitle{
-  color:#a56b7e;
-}
-
+.container{max-width:520px;margin:auto;padding:20px 16px 40px}
+.header{text-align:center;padding:20px 10px 14px}
+.heart{font-size:42px}.header h1{margin:6px 0;font-size:28px}.subtitle{color:#a56b7e}
 .card{
   background:rgba(255,255,255,.94);
   border-radius:24px;
   padding:22px;
   margin:16px 0;
-
-  box-shadow:
-    0 10px 30px
-    rgba(190,90,120,.12);
+  box-shadow:0 10px 30px rgba(190,90,120,.12);
 }
-
-.center{
-  text-align:center;
+.center{text-align:center}
+label{display:block;margin:14px 0 7px;font-weight:600}
+select,input{
+  width:100%;padding:14px;border:1px solid #f1c8d6;border-radius:14px;
+  font-size:16px;background:#fff;outline:none
 }
-
-label{
-  display:block;
-  margin:14px 0 7px;
-  font-weight:600;
-}
-
-select,
-input{
-  width:100%;
-  padding:14px;
-
-  border:
-    1px solid
-    #f1c8d6;
-
-  border-radius:14px;
-
-  font-size:16px;
-
-  background:#fff;
-
-  outline:none;
-}
-
 button{
-  border:0;
-
-  border-radius:14px;
-
-  padding:13px 18px;
-
-  font-size:16px;
-
-  font-weight:600;
-
-  cursor:pointer;
+  border:0;border-radius:14px;padding:13px 18px;font-size:16px;
+  font-weight:600;cursor:pointer
 }
-
-.primary{
-  background:#f45b91;
-  color:white;
-}
-
-.secondary{
-  background:#fff0f5;
-  color:#d94178;
-}
-
-.full{
-  width:100%;
-  margin-top:18px;
-}
-
-.notice{
-  font-size:14px;
-  line-height:1.8;
-
-  color:#a56b7e;
-
-  margin-top:15px;
-}
-
-.hidden{
-  display:none!important;
-}
-
+.primary{background:#f45b91;color:white}
+.secondary{background:#fff0f5;color:#d94178}
+.full{width:100%;margin-top:18px}
+.notice{font-size:14px;line-height:1.8;color:#a56b7e;margin-top:15px}
+.hidden{display:none!important}
 .points{
-  background:
-    linear-gradient(
-      135deg,
-      #ff6f9d,
-      #f83f7c
-    );
-
-  color:white;
-
-  text-align:center;
-
-  border-radius:26px;
-
-  padding:26px 18px;
+  background:linear-gradient(135deg,#ff6f9d,#f83f7c);
+  color:white;text-align:center;border-radius:26px;padding:26px 18px;
 }
-
-.points small{
-  font-size:16px;
-}
-
-.number{
-  font-size:68px;
-
-  font-weight:800;
-
-  line-height:1.1;
-
-  margin:8px;
-}
-
+.points small{font-size:16px}.number{font-size:68px;font-weight:800;line-height:1.1;margin:8px}
 .reward{
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:12px;
-
-  padding:16px 0;
-
-  border-bottom:
-    1px solid
-    #f7dce5;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:16px 0;border-bottom:1px solid #f7dce5
 }
-
-.reward:last-child{
-  border-bottom:0;
-}
-
-.reward h3{
-  margin:0 0 5px;
-}
-
-.cost{
-  color:#ef5b8a;
-}
-
-.reward button{
-  min-width:82px;
-}
-
-.record{
-  padding:10px 0;
-
-  border-bottom:
-    1px solid
-    #f5dfe6;
-
-  font-size:14px;
-}
-
-.footer{
-  text-align:center;
-
-  color:#b17b8d;
-
-  padding:20px;
-
-  font-size:13px;
-}
-
-.row{
-  display:flex;
-  gap:10px;
-}
-
-.row>*{
-  flex:1;
-}
-
-.danger{
-  background:#fff0f0;
-  color:#b53d3d;
-}
-
+.reward:last-child{border-bottom:0}
+.reward h3{margin:0 0 5px}.cost{color:#ef5b8a}
+.reward button{min-width:82px}
+.record{padding:10px 0;border-bottom:1px solid #f5dfe6;font-size:14px}
+.footer{text-align:center;color:#b17b8d;padding:20px;font-size:13px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.success{background:#edfff4;color:#21864c;padding:12px;border-radius:12px;margin-top:12px}
+.danger{background:#fff0f0;color:#b53d3d}
 </style>
-
 </head>
-
-
 <body>
-
 <div class="container">
 
-
   <div class="header">
-
-    <div class="heart">
-      💗
-    </div>
-
-    <h1>
-      我们的积分小屋
-    </h1>
-
-    <div class="subtitle">
-      只属于我们两个人的小世界
-    </div>
-
+    <div class="heart">💗</div>
+    <h1>我们的积分小屋</h1>
+    <div class="subtitle">只属于我们两个人的小世界</div>
   </div>
-
-
 
   <!-- 登录 -->
+  <section id="loginPage" class="card">
+    <h2 class="center">💗 欢迎回来</h2>
 
-  <section
-    id="loginPage"
-    class="card"
-  >
-
-    <h2 class="center">
-      💗 欢迎回来
-    </h2>
-
-
-    <label>
-      请选择身份
-    </label>
-
-
+    <label>请选择身份</label>
     <select id="role">
-
-      <option value="girl">
-        女朋友 · 黎子雅
-      </option>
-
-      <option value="boy">
-        男朋友 · 林嘉钦
-      </option>
-
+      <option value="girl">女朋友 · 黎子雅</option>
+      <option value="boy">男朋友 · 林嘉钦</option>
     </select>
 
+    <label>登录密码</label>
+    <input id="password" type="password" inputmode="numeric" maxlength="4" placeholder="请输入密码">
 
-    <label>
-      登录密码
-    </label>
-
-
-    <input
-      id="password"
-      type="password"
-      inputmode="numeric"
-      maxlength="4"
-      placeholder="请输入4位密码"
-    >
-
-
-    <button
-      class="primary full"
-      onclick="login()"
-    >
-      进入我们的小世界
-    </button>
-
+    <button class="primary full" onclick="login()">进入我们的小世界</button>
 
     <div class="notice center">
-
       女朋友密码：1220<br>
-
       男朋友密码：0310
-
     </div>
-
-
     <div id="loginMsg"></div>
-
   </section>
-
-
 
   <!-- 主页面 -->
-
-  <section
-    id="mainPage"
-    class="hidden"
-  >
-
-
-    <!-- 积分 -->
+  <section id="mainPage" class="hidden">
 
     <div class="card points">
-
-      <small id="pointsOwner">
-        黎子雅的当前积分
-      </small>
-
-
-      <div
-        class="number"
-        id="points"
-      >
-        0
-      </div>
-
-
-      <div>
-        ❤️ 每一分都是嘉钦给你的心意
-      </div>
-
+      <small id="pointsOwner">黎子雅的当前积分</small>
+      <div class="number" id="points">0</div>
+      <div>❤️ 每一分都是嘉钦给你的心意</div>
     </div>
-
-
-
-    <!-- 在一起 -->
 
     <div class="card center">
-
-      <div style="font-size:22px">
-
-        💕 我们已经在一起
-
-      </div>
-
-
-      <h2
-        id="days"
-        style="font-size:38px;margin:8px 0"
-      >
-        0 天
-      </h2>
-
-
-      <div class="subtitle">
-
-        从 2026 年 3 月 10 日开始
-
-      </div>
-
+      <div style="font-size:22px">💕 我们已经在一起</div>
+      <h2 id="days" style="font-size:38px;margin:8px 0">0 天</h2>
+      <div class="subtitle">从 2026 年 3 月 10 日开始</div>
     </div>
-
-
-
-    <!-- 女朋友 -->
 
     <div id="girlPanel">
-
       <div class="card">
-
-        <h2>
-          🎁 我的奖励
-        </h2>
-
+        <h2>🎁 我的奖励</h2>
         <div id="rewards"></div>
-
       </div>
-
     </div>
 
-
-
-    <!-- 男朋友 -->
-
-    <div
-      id="boyPanel"
-      class="hidden"
-    >
-
-
-      <!-- 积分 -->
-
+    <div id="boyPanel" class="hidden">
       <div class="card">
-
-        <h2>
-          💝 给子雅加积分
-        </h2>
-
-
+        <h2>💝 给子雅加积分</h2>
         <div class="row">
-
-          <input
-            id="changePoints"
-            type="number"
-            inputmode="numeric"
-            placeholder="积分"
-          >
-
-
-          <button
-            class="primary"
-            onclick="addPoints()"
-          >
-            增加
-          </button>
-
+          <input id="changePoints" type="number" inputmode="numeric" placeholder="积分">
+          <button class="primary" onclick="addPoints()">增加</button>
         </div>
-
-
-        <button
-          class="secondary full"
-          onclick="subtractPoints()"
-        >
-          扣除积分
-        </button>
-
+        <button class="secondary full" onclick="subtractPoints()">扣除积分</button>
       </div>
 
-
-
-      <!-- 奖励管理 -->
-
       <div class="card">
-
-        <h2>
-          🎁 奖励管理
-        </h2>
-
-
-        <input
-          id="rewardName"
-          placeholder="奖励名称，例如：奶茶一杯 🧋"
-        >
-
-
-        <input
-          id="rewardCost"
-          type="number"
-          inputmode="numeric"
-          placeholder="需要多少积分"
-          style="margin-top:10px"
-        >
-
-
-        <button
-          class="primary full"
-          onclick="addReward()"
-        >
-          ＋ 添加奖励
-        </button>
-
-
-        <div
-          id="adminRewards"
-          style="margin-top:12px"
-        ></div>
-
+        <h2>🎁 奖励管理</h2>
+        <input id="rewardName" placeholder="奖励名称，例如：奶茶一杯 🧋">
+        <input id="rewardCost" type="number" inputmode="numeric" placeholder="需要多少积分" style="margin-top:10px">
+        <button class="primary full" onclick="addReward()">＋ 添加奖励</button>
+        <div id="adminRewards" style="margin-top:12px"></div>
       </div>
 
-
-
-      <!-- 记录 -->
-
       <div class="card">
-
-        <h2>
-          📖 全部记录
-        </h2>
-
-
+        <h2>📖 全部记录</h2>
         <div id="adminRecords"></div>
-
       </div>
-
     </div>
-
-
-
-    <!-- 共同记录 -->
 
     <div class="card">
-
-      <h2>
-        💌 我们的记录
-      </h2>
-
-
+      <h2>💌 我们的记录</h2>
       <div id="records"></div>
-
     </div>
-
-
 
     <div class="center">
-
-      <button
-        class="secondary"
-        onclick="logout()"
-      >
-        退出登录
-      </button>
-
+      <button class="secondary" onclick="logout()">退出登录</button>
     </div>
-
   </section>
 
-
-
-  <div class="footer">
-
-    林嘉钦 ❤️ 黎子雅<br>
-
-    Love is made of little moments.
-
-  </div>
-
-
+  <div class="footer">林嘉钦 ❤️ 黎子雅<br>Love is made of little moments.</div>
 </div>
 
-
-
-<!-- Firebase -->
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
-
-
-
 <script>
-
-
-/* ==================================
-   Firebase
-================================== */
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyDl6HgvheJZe18f1Vj_D2NirG3npTaFwB0",
-
-  authDomain:
-    "love-point-card.firebaseapp.com",
-
-  databaseURL:
-    "https://love-point-card-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-  projectId:
-    "love-point-card",
-
-  storageBucket:
-    "love-point-card.firebasestorage.app",
-
-  messagingSenderId:
-    "979855456387",
-
-  appId:
-    "1:979855456387:web:42560a01bb5d6dfddd43b6",
-
-  measurementId:
-    "G-41H1TDBTPK"
-
-};
-
-
-firebase.initializeApp(
-  firebaseConfig
-);
-
-
-const db =
-  firebase.database();
-
-
-const dataRef =
-  db.ref("loveBank");
-
-
-
-/* ==================================
-   基础数据
-================================== */
-
-const START_DATE =
-  new Date(
-    "2026-03-10T00:00:00"
-  );
-
+const PASSWORDS = { girl:"1220", boy:"0310" };
+const START_DATE = new Date("2026-03-10T00:00:00");
 
 const defaultRewards = [
-
-  {
-    id:"1",
-    name:"奶茶一杯 🧋",
-    cost:50
-  },
-
-  {
-    id:"2",
-    name:"陪你看电影 🎬",
-    cost:100
-  },
-
-  {
-    id:"3",
-    name:"请你吃大餐 🍰",
-    cost:200
-  }
-
+  {id:1,name:"奶茶一杯 🧋",cost:50},
+  {id:2,name:"陪你看电影 🎬",cost:100},
+  {id:3,name:"请你吃大餐 🍰",cost:200}
 ];
 
-
-let data = {
-
-  points:0,
-
-  rewards:{},
-
-  records:{}
-
-};
-
-
+let data = JSON.parse(localStorage.getItem("loveBank") || "null");
+if(!data){
+  data = {points:0, rewards:defaultRewards, records:[]};
+  save();
+}
+if(!Array.isArray(data.rewards)) data.rewards = defaultRewards;
+if(!Array.isArray(data.records)) data.records = [];
 let currentRole = null;
 
-let dataListenerAttached = false;
-
-let migrationRunning = false;
-
-
-
-/* ==================================
-   把旧数组转换成新对象
-================================== */
-
-function convertRewards(value){
-
-  if(
-    !value ||
-    typeof value !== "object"
-  ){
-
-    const result = {};
-
-    defaultRewards.forEach(function(r){
-
-      result[r.id] = {
-        id:r.id,
-        name:r.name,
-        cost:r.cost
-      };
-
-    });
-
-    return result;
-
-  }
-
-
-  if(Array.isArray(value)){
-
-    const result = {};
-
-    value.forEach(function(r,index){
-
-      if(!r)
-        return;
-
-      const id =
-        String(
-          r.id !== undefined
-            ? r.id
-            : index
-        );
-
-      result[id] = {
-
-        id:id,
-
-        name:
-          String(r.name || ""),
-
-        cost:
-          Number(r.cost) || 0
-
-      };
-
-    });
-
-    return result;
-
-  }
-
-
-  return value;
-
-}
-
-
-
-function convertRecords(value){
-
-  if(
-    !value ||
-    typeof value !== "object"
-  ){
-
-    return {};
-
-  }
-
-
-  if(Array.isArray(value)){
-
-    const result = {};
-
-    value.forEach(function(r,index){
-
-      if(!r)
-        return;
-
-      result[
-        "old_" + index
-      ] = r;
-
-    });
-
-    return result;
-
-  }
-
-
-  return value;
-
-}
-
-
-
-/* ==================================
-   旧数据迁移
-================================== */
-
-function migrateData(){
-
-  if(migrationRunning)
-    return;
-
-  migrationRunning = true;
-
-
-  dataRef.transaction(
-
-    function(current){
-
-      if(!current){
-
-        return {
-
-          points:0,
-
-          rewards:
-            convertRewards(null),
-
-          records:{}
-
-        };
-
-      }
-
-
-      const next = {
-        ...current
-      };
-
-
-      if(
-        Array.isArray(
-          current.rewards
-        )
-      ){
-
-        next.rewards =
-          convertRewards(
-            current.rewards
-          );
-
-      }
-      else if(
-        !current.rewards
-      ){
-
-        next.rewards =
-          convertRewards(null);
-
-      }
-
-
-      if(
-        Array.isArray(
-          current.records
-        )
-      ){
-
-        next.records =
-          convertRecords(
-            current.records
-          );
-
-      }
-      else if(
-        !current.records
-      ){
-
-        next.records = {};
-
-      }
-
-
-      next.points =
-        Number(
-          current.points
-        ) || 0;
-
-
-      return next;
-
-    },
-
-    function(error){
-
-      migrationRunning = false;
-
-
-      if(error){
-
-        console.error(
-          "数据迁移失败：",
-          error
-        );
-
-      }
-
-    }
-
-  );
-
-}
-
-
-
-/* ==================================
-   监听Firebase
-================================== */
-
-function startDataListener(){
-
-  if(dataListenerAttached)
-    return;
-
-
-  dataListenerAttached = true;
-
-
-  dataRef.on(
-
-    "value",
-
-    function(snapshot){
-
-      if(!snapshot.exists()){
-
-        migrateData();
-
-        return;
-
-      }
-
-
-      const raw =
-        snapshot.val();
-
-
-      /*
-        如果发现旧版数组，
-        先迁移，不直接覆盖。
-      */
-
-      if(
-        Array.isArray(
-          raw.rewards
-        )
-        ||
-        Array.isArray(
-          raw.records
-        )
-      ){
-
-        migrateData();
-
-        return;
-
-      }
-
-
-      data = {
-
-        points:
-          Number(raw.points) || 0,
-
-        rewards:
-          raw.rewards || {},
-
-        records:
-          raw.records || {}
-
-      };
-
-
-      render();
-
-    },
-
-    function(error){
-
-      console.error(
-        "Firebase读取失败：",
-        error
-      );
-
-
-      alert(
-        "同步失败，请检查Firebase规则。"
-      );
-
-    }
-
-  );
-
-}
-
-
-
-/* ==================================
-   登录
-================================== */
+function save(){localStorage.setItem("loveBank",JSON.stringify(data));}
 
 function login(){
-
-  const role =
-    document
-      .getElementById("role")
-      .value;
-
-
-  const pin =
-    document
-      .getElementById("password")
-      .value;
-
-
-  const msg =
-    document
-      .getElementById("loginMsg");
-
-
-  if(pin.length !== 4){
-
-    msg.innerHTML =
-
-      '<div class="notice center" ' +
-
-      'style="color:#c43d61">' +
-
-      '请输入4位密码 💗' +
-
-      '</div>';
-
+  const role=document.getElementById("role").value;
+  const password=document.getElementById("password").value;
+  const msg=document.getElementById("loginMsg");
+  if(password !== PASSWORDS[role]){
+    msg.innerHTML='<div class="notice center" style="color:#c43d61">密码不正确，请再试一次 💗</div>';
     return;
-
   }
-
-
-  if(
-    role === "girl" &&
-    pin !== "1220"
-  ){
-
-    showLoginError();
-
-    return;
-
-  }
-
-
-  if(
-    role === "boy" &&
-    pin !== "0310"
-  ){
-
-    showLoginError();
-
-    return;
-
-  }
-
-
-  msg.innerHTML = "";
-
-
-  currentRole =
-    role;
-
-
-  document
-    .getElementById("loginPage")
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById("mainPage")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById("girlPanel")
-    .classList
-    .toggle(
-      "hidden",
-      role !== "girl"
-    );
-
-
-  document
-    .getElementById("boyPanel")
-    .classList
-    .toggle(
-      "hidden",
-      role !== "boy"
-    );
-
-
-  startDataListener();
-
+  currentRole=role;
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("mainPage").classList.remove("hidden");
+  document.getElementById("girlPanel").classList.toggle("hidden",role!=="girl");
+  document.getElementById("boyPanel").classList.toggle("hidden",role!=="boy");
   render();
-
 }
-
-
-
-function showLoginError(){
-
-  document
-    .getElementById("loginMsg")
-    .innerHTML =
-
-    '<div class="notice center" ' +
-
-    'style="color:#c43d61">' +
-
-    '密码不正确，请再试一次 💗' +
-
-    '</div>';
-
-}
-
-
-
-/* ==================================
-   退出
-================================== */
 
 function logout(){
-
-  currentRole = null;
-
-
-  document
-    .getElementById("mainPage")
-    .classList
-    .add("hidden");
-
-
-  document
-    .getElementById("loginPage")
-    .classList
-    .remove("hidden");
-
-
-  document
-    .getElementById("password")
-    .value = "";
-
-
-  document
-    .getElementById("loginMsg")
-    .innerHTML = "";
-
+  currentRole=null;
+  document.getElementById("password").value="";
+  document.getElementById("mainPage").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
 }
-
-
-
-/* ==================================
-   安全读取记录
-================================== */
-
-function recordsArray(){
-
-  return Object.keys(
-    data.records || {}
-  )
-
-  .map(function(key){
-
-    return {
-
-      key:key,
-
-      value:
-        data.records[key]
-
-    };
-
-  })
-
-  .filter(function(x){
-
-    return x.value;
-
-  });
-
-}
-
-
-
-/* ==================================
-   奖励数组
-================================== */
-
-function rewardsArray(){
-
-  return Object.keys(
-    data.rewards || {}
-  )
-
-  .map(function(key){
-
-    return {
-
-      key:key,
-
-      value:
-        data.rewards[key]
-
-    };
-
-  })
-
-  .filter(function(x){
-
-    return x.value;
-
-  });
-
-}
-
-
-
-/* ==================================
-   页面渲染
-================================== */
 
 function render(){
-
-  document
-    .getElementById("points")
-    .textContent =
-    data.points;
-
-
-  document
-    .getElementById("pointsOwner")
-    .textContent =
-    "黎子雅的当前积分";
-
-
-
-  const days =
-
-    Math.max(
-
-      0,
-
-      Math.floor(
-
-        (
-          new Date()
-          -
-          START_DATE
-        )
-        /
-        86400000
-
-      )
-
-    );
-
-
-  document
-    .getElementById("days")
-    .textContent =
-    days + " 天";
-
-
-
-  /* 奖励 */
-
-  const rewards =
-    rewardsArray();
-
-
-  document
-    .getElementById("rewards")
-    .innerHTML =
-
-    rewards.length
-
-      ?
-
-      rewards.map(function(item){
-
-        const r =
-          item.value;
-
-
-        return `
-
-          <div class="reward">
-
-            <div>
-
-              <h3>
-                ${escapeHtml(r.name)}
-              </h3>
-
-              <div class="cost">
-                ${Number(r.cost)} 积分
-              </div>
-
-            </div>
-
-
-            <button
-              class="primary"
-              onclick="redeem('${item.key}')"
-            >
-              兑换
-            </button>
-
-          </div>
-
-        `;
-
-      }).join("")
-
-      :
-
-      '<div class="notice">' +
-      '暂时没有奖励 💕' +
-      '</div>';
-
-
-
-  /* 男朋友奖励管理 */
-
-  document
-    .getElementById("adminRewards")
-    .innerHTML =
-
-    rewards.length
-
-      ?
-
-      rewards.map(function(item){
-
-        const r =
-          item.value;
-
-
-        return `
-
-          <div class="reward">
-
-            <div>
-
-              <b>
-                ${escapeHtml(r.name)}
-              </b>
-
-              <div class="cost">
-                ${Number(r.cost)} 积分
-              </div>
-
-            </div>
-
-
-            <button
-              class="secondary danger"
-              onclick="deleteReward('${item.key}')"
-            >
-              删除
-            </button>
-
-          </div>
-
-        `;
-
-      }).join("")
-
-      :
-
-      '<div class="notice">' +
-      '暂时没有奖励' +
-      '</div>';
-
-
-
-  /* 记录 */
-
-  const records =
-    recordsArray()
-      .reverse();
-
-
-  const recordHtml =
-
-    records.length
-
-      ?
-
-      records.map(function(item){
-
-        const x =
-          item.value;
-
-
-        return `
-
-          <div class="record">
-
-            ${escapeHtml(x.text)}
-
-            <br>
-
-            <span
-              style="color:#ad7a8c"
-            >
-              ${escapeHtml(x.time)}
-            </span>
-
-          </div>
-
-        `;
-
-      }).join("")
-
-      :
-
-      '<div class="notice">' +
-      '还没有记录 💕' +
-      '</div>';
-
-
-
-  document
-    .getElementById("records")
-    .innerHTML =
-    recordHtml;
-
-
-  document
-    .getElementById("adminRecords")
-    .innerHTML =
-    recordHtml;
-
+  document.getElementById("points").textContent=data.points;
+  document.getElementById("pointsOwner").textContent="黎子雅的当前积分";
+  const days=Math.max(0,Math.floor((new Date()-START_DATE)/86400000));
+  document.getElementById("days").textContent=days+" 天";
+
+  document.getElementById("rewards").innerHTML=data.rewards.map(r=>`
+    <div class="reward">
+      <div><h3>${escapeHtml(r.name)}</h3><div class="cost">${r.cost} 积分</div></div>
+      <button class="primary" onclick="redeem(${r.id})">兑换</button>
+    </div>`).join("");
+
+  document.getElementById("adminRewards").innerHTML=data.rewards.map(r=>`
+    <div class="reward">
+      <div><b>${escapeHtml(r.name)}</b><div class="cost">${r.cost} 积分</div></div>
+      <button class="secondary danger" onclick="deleteReward(${r.id})">删除</button>
+    </div>`).join("");
+
+  const records=data.records.length ? data.records.slice().reverse().map(x=>`
+    <div class="record">${escapeHtml(x.text)}<br><span style="color:#ad7a8c">${escapeHtml(x.time)}</span></div>`).join("")
+    : '<div class="notice">还没有记录 💕</div>';
+  document.getElementById("records").innerHTML=records;
+  document.getElementById("adminRecords").innerHTML=records;
 }
-
-
-
-/* ==================================
-   增加记录
-================================== */
-
-function addRecordInTransaction(
-  current,
-  text
-){
-
-  if(!current)
-    current = {};
-
-
-  if(
-    !current.records ||
-    typeof current.records !== "object" ||
-    Array.isArray(current.records)
-  ){
-
-    current.records = {};
-
-  }
-
-
-  const key =
-    firebase
-      .database()
-      .ref()
-      .push()
-      .key;
-
-
-  current.records[key] = {
-
-    text:text,
-
-    time:now()
-
-  };
-
-
-  return current;
-
-}
-
-
-
-/* ==================================
-   增加积分
-================================== */
 
 function addPoints(){
-
-  if(
-    currentRole !== "boy"
-  )
-    return;
-
-
-  const n =
-    Number(
-
-      document
-        .getElementById(
-          "changePoints"
-        )
-        .value
-
-    );
-
-
-  if(
-    !Number.isFinite(n) ||
-    n <= 0
-  ){
-
-    return alert(
-      "请输入正确的积分"
-    );
-
-  }
-
-
-  const amount =
-    Math.floor(n);
-
-
-  document
-    .getElementById(
-      "changePoints"
-    )
-    .value = "";
-
-
-  dataRef.transaction(
-
-    function(current){
-
-      if(!current){
-
-        current = {
-
-          points:0,
-
-          rewards:
-            convertRewards(null),
-
-          records:{}
-
-        };
-
-      }
-
-
-      current.points =
-        Number(
-          current.points
-        ) || 0;
-
-
-      current.points +=
-        amount;
-
-
-      addRecordInTransaction(
-
-        current,
-
-        `嘉钦给子雅增加了 ${amount} 积分 💗`
-
-      );
-
-
-      return current;
-
-    },
-
-    function(error){
-
-      if(error){
-
-        alert(
-          "增加积分失败，请重试"
-        );
-
-        console.error(error);
-
-      }
-
-    }
-
-  );
-
+  const n=Number(document.getElementById("changePoints").value);
+  if(!Number.isFinite(n)||n<=0)return alert("请输入正确的积分");
+  data.points+=Math.floor(n);
+  data.records.push({text:`嘉钦给子雅增加了 ${Math.floor(n)} 积分 💗`,time:now()});
+  document.getElementById("changePoints").value="";
+  save();render();
 }
-
-
-
-/* ==================================
-   扣除积分
-================================== */
 
 function subtractPoints(){
-
-  if(
-    currentRole !== "boy"
-  )
-    return;
-
-
-  const n =
-    Number(
-
-      document
-        .getElementById(
-          "changePoints"
-        )
-        .value
-
-    );
-
-
-  if(
-    !Number.isFinite(n) ||
-    n <= 0
-  ){
-
-    return alert(
-      "请输入正确的积分"
-    );
-
-  }
-
-
-  const amount =
-    Math.floor(n);
-
-
-  document
-    .getElementById(
-      "changePoints"
-    )
-    .value = "";
-
-
-  dataRef.transaction(
-
-    function(current){
-
-      if(!current)
-        return current;
-
-
-      current.points =
-        Number(
-          current.points
-        ) || 0;
-
-
-      current.points =
-        Math.max(
-          0,
-          current.points - amount
-        );
-
-
-      addRecordInTransaction(
-
-        current,
-
-        `扣除了 ${amount} 积分`
-
-      );
-
-
-      return current;
-
-    },
-
-    function(error){
-
-      if(error){
-
-        alert(
-          "扣除积分失败，请重试"
-        );
-
-        console.error(error);
-
-      }
-
-    }
-
-  );
-
+  const n=Number(document.getElementById("changePoints").value);
+  if(!Number.isFinite(n)||n<=0)return alert("请输入正确的积分");
+  data.points=Math.max(0,data.points-Math.floor(n));
+  data.records.push({text:`扣除了 ${Math.floor(n)} 积分`,time:now()});
+  document.getElementById("changePoints").value="";
+  save();render();
 }
 
-
-
-/* ==================================
-   兑换奖励
-================================== */
-
-function redeem(key){
-
-  if(
-    currentRole !== "girl"
-  )
-    return;
-
-  if(
-    !confirm("确定要兑换这个奖品吗？")
-  ){
-    return;
-  }
-
-  dataRef.transaction(
-
-    function(current){
-
-      if(!current){
-        return;
-      }
-
-      current.points =
-        Number(current.points) || 0;
-
-      /* 以 Firebase 当前最新数据为准 */
-      if(
-        !current.rewards ||
-        !current.rewards[key]
-      ){
-        return;
-      }
-
-      const reward =
-        current.rewards[key];
-
-      const cost =
-        Number(reward.cost) || 0;
-
-      if(
-        cost <= 0 ||
-        current.points < cost
-      ){
-        return;
-      }
-
-      /* 真正扣除积分 */
-      current.points -= cost;
-
-      if(
-        !current.records ||
-        typeof current.records !== "object" ||
-        Array.isArray(current.records)
-      ){
-        current.records = {};
-      }
-
-      const recordKey =
-        dataRef
-          .child("records")
-          .push()
-          .key;
-
-      current.records[recordKey] = {
-        text:
-          `黎子雅兑换了「${reward.name}」，-${cost} 积分 🎁`,
-        time:now()
-      };
-
-      return current;
-
-    },
-
-    function(error, committed){
-
-      if(error){
-
-        console.error(
-          "兑换失败：",
-          error
-        );
-
-        alert(
-          "兑换失败，请检查网络后再试～"
-        );
-
-        return;
-      }
-
-      if(!committed){
-
-        alert(
-          "兑换没有完成：积分不足，或者这个奖品已经不存在了～"
-        );
-
-        return;
-      }
-
-      alert(
-        "兑换成功啦！已经扣除相应积分 💕"
-      );
-
-    }
-
-  );
-
+function redeem(id){
+  const r=data.rewards.find(x=>x.id===id);
+  if(!r)return;
+  if(data.points<r.cost)return alert("积分不够哦 💗");
+  if(!confirm(`确定用 ${r.cost} 积分兑换「${r.name}」吗？`))return;
+  data.points-=r.cost;
+  data.records.push({text:`黎子雅兑换了「${r.name}」，-${r.cost} 积分 🎁`,time:now()});
+  save();render();
+  alert("兑换成功啦！💕");
 }
-
-
-/* ==================================
-   添加奖励
-================================== */
 
 function addReward(){
-
-  if(
-    currentRole !== "boy"
-  )
-    return;
-
-
-  const name =
-
-    document
-      .getElementById(
-        "rewardName"
-      )
-      .value
-      .trim();
-
-
-  const cost =
-
-    Number(
-
-      document
-        .getElementById(
-          "rewardCost"
-        )
-        .value
-
-    );
-
-
-  if(
-    !name ||
-    !Number.isFinite(cost) ||
-    cost <= 0
-  ){
-
-    return alert(
-      "请填写奖励名称和正确的积分"
-    );
-
-  }
-
-
-  const rewardId =
-    dataRef
-      .child("rewards")
-      .push()
-      .key;
-
-
-  dataRef
-    .child("rewards")
-    .child(rewardId)
-    .set({
-
-      id:rewardId,
-
-      name:name,
-
-      cost:
-        Math.floor(cost)
-
-    })
-
-    .then(function(){
-
-      document
-        .getElementById(
-          "rewardName"
-        )
-        .value = "";
-
-
-      document
-        .getElementById(
-          "rewardCost"
-        )
-        .value = "";
-
-    })
-
-    .catch(function(error){
-
-      alert(
-        "添加奖励失败"
-      );
-
-      console.error(error);
-
-    });
-
+  const name=document.getElementById("rewardName").value.trim();
+  const cost=Number(document.getElementById("rewardCost").value);
+  if(!name||!Number.isFinite(cost)||cost<=0)return alert("请填写奖励名称和正确的积分");
+  data.rewards.push({id:Date.now(),name,cost:Math.floor(cost)});
+  document.getElementById("rewardName").value="";
+  document.getElementById("rewardCost").value="";
+  save();render();
 }
 
-
-
-/* ==================================
-   删除奖励
-================================== */
-
-function deleteReward(key){
-
-  if(
-    currentRole !== "boy"
-  )
-    return;
-
-
-  if(
-    !confirm(
-      "确定删除这个奖励吗？"
-    )
-  ){
-
-    return;
-
-  }
-
-
-  dataRef
-    .child("rewards")
-    .child(key)
-    .remove()
-
-    .catch(function(error){
-
-      alert(
-        "删除失败，请重试"
-      );
-
-      console.error(error);
-
-    });
-
+function deleteReward(id){
+  data.rewards=data.rewards.filter(r=>r.id!==id);
+  save();render();
 }
-
-
-
-/* ==================================
-   当前时间
-================================== */
 
 function now(){
-
-  return new Date()
-    .toLocaleString(
-
-      "zh-CN",
-
-      {
-        hour12:false
-      }
-
-    );
-
+  return new Date().toLocaleString("zh-CN",{hour12:false});
 }
-
-
-
-/* ==================================
-   HTML安全
-================================== */
 
 function escapeHtml(s){
-
-  return String(s)
-
-    .replace(
-
-      /[&<>"']/g,
-
-      function(m){
-
-        return {
-
-          "&":"&amp;",
-
-          "<":"&lt;",
-
-          ">":"&gt;",
-
-          '"':"&quot;",
-
-          "'":"&#39;"
-
-        }[m];
-
-      }
-
-    );
-
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 }
 
-
-
-/* ==================================
-   回车登录
-================================== */
-
-document
-  .getElementById("password")
-  .addEventListener(
-
-    "keydown",
-
-    function(e){
-
-      if(
-        e.key === "Enter"
-      ){
-
-        login();
-
-      }
-
-    }
-
-  );
-
-
-
-/* ==================================
-   启动
-================================== */
-
-startDataListener();
-
+document.getElementById("password").addEventListener("keydown",e=>{
+  if(e.key==="Enter")login();
+});
 render();
-
-
 </script>
-
 </body>
-
 </html>
